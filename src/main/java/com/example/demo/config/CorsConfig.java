@@ -10,7 +10,7 @@ public class CorsConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/*")
+        registry.addMapping("/api/**")
                 .allowedOrigins("http://localhost:3000") 	//Da chuyen sang IP FE
                 .allowedMethods("GET", "POST", "PUT", "DELETE"); // Allow specific HTTP methods
     }
