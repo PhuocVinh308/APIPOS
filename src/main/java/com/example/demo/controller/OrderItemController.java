@@ -29,6 +29,10 @@ public class OrderItemController {
         return orderItemService.createOrderItem(orderItem);
     }
 
+    @DeleteMapping("{id}")
+    public void deleteOrderItem(@PathVariable Long id){
+         orderItemService.deleteOrderItem(id);
+    }
    
 
 

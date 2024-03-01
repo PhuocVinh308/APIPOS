@@ -50,7 +50,7 @@ public class Ban {
 
 
 
-public Ban() {
+public Ban( ) {
 }
 
 public Ban(Long id, boolean status) {

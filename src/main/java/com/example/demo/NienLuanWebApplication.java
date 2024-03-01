@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class NienLuanWebApplication {
+public class  NienLuanWebApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(NienLuanWebApplication.class, args);

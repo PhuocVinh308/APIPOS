@@ -9,7 +9,7 @@ import com.example.demo.model.Product;
 import java.util.List;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface  ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.price = :price")
     List<Product> getProductByPrice(double price);

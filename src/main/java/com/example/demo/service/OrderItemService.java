@@ -15,6 +15,7 @@ public class OrderItemService {
     private OrderItemRepository orderItemRepository;
 
     public List<OrderItem> getAllOrderItems() {
+
         return orderItemRepository.findAll();
     }
 
@@ -26,7 +27,9 @@ public class OrderItemService {
     public OrderItem createOrderItem(OrderItem orderItem) {
         return orderItemRepository.save(orderItem);
     }
-
+    public void deleteOrderItem(Long id){
+        orderItemRepository.deleteById(id);
+    }
 
 
 }
