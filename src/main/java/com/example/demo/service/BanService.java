@@ -35,6 +35,19 @@ public class BanService {
         return tableRepository.save(table);
     }
 
+    public Ban updateTable(Long tableId, Ban updatedTable) {
+        Optional<Ban> existingTableOptional = tableRepository.findById(tableId);
+
+        if (existingTableOptional.isPresent()) {
+            Ban existingTable = existingTableOptional.get();
+            existingTable.setStatus(updatedTable.isStatus());
+
+            return tableRepository.save(existingTable);
+        } else {
+            throw new RuntimeException("Không tìm thấy bàn có id: " + tableId);
+        }
+    }
+
     public void deleteTable(Long tableId) {
         tableRepository.deleteById(tableId);
     }

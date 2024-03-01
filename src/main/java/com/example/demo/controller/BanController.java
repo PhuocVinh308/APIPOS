@@ -49,5 +49,8 @@ public class BanController {
         tableService.deleteTable(tableId);
     }
 
-
+    @PutMapping("/{tableId}")
+    public void updateTable(@PathVariable Long tableId, @RequestBody Ban updateTable) {
+        tableService.updateTable(tableId, updateTable);
+    }
 }
