@@ -16,8 +16,9 @@ public class OrderItemService {
     private OrderItemRepository orderItemRepository;
     @Transactional
     public List<OrderItem> getAllOrderItems() {
+        List<OrderItem> orderItemList = orderItemRepository.findAll();
+        return orderItemList;
 
-        return orderItemRepository.findAll();
     }
 
     public OrderItem getOrderItemById(Long id) {

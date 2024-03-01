@@ -1,5 +1,5 @@
 package com.example.demo.model;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,6 +18,7 @@ public class Order {
     @JoinColumn(name = "ban_id")
     private Ban ban;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
