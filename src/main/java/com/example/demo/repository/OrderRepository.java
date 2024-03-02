@@ -14,4 +14,6 @@ public interface  OrderRepository extends JpaRepository<Order, Long> {
 //            "WHERE o.order_date > '2024-01-01'and o.order_date <'2024-12-31'\n" +
 //            "GROUP BY p.id;")
 //    public Long thongKeHoaDon()
+
+
 }
