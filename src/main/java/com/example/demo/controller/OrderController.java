@@ -37,7 +37,7 @@ public class OrderController {
     public Order updateOrder(@PathVariable Long orderId, @RequestBody Order updatedOrder) {
         return orderService.updateOrder(orderId, updatedOrder);
     }
-    @GetMapping("/idmax")
+    @GetMapping("/max")
     public int layIDMax(){
         return orderService.getMaxID();
     }
