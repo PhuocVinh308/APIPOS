@@ -26,7 +26,7 @@ public class Order {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
-
+//
     private double totalAmount;
 
     public Order() {
