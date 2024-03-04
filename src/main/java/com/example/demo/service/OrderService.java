@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Order;
+import com.example.demo.model.OrderDetail;
 import com.example.demo.repository.OrderRepository;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,5 +53,9 @@ public class OrderService {
 
     public int getMaxID() {
         return orderRepository.findMaxByID();
+    }
+
+    public List<Object> getChiTietHoaDon() {
+       return orderRepository.getOrderDetail();
     }
 }

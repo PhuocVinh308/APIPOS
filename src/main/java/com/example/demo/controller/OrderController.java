@@ -1,10 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Order;
+import com.example.demo.model.OrderDetail;
 import com.example.demo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -46,6 +48,18 @@ public class OrderController {
         };
     }
 
+    @GetMapping("/chitiethoadon")
+    public List<OrderDetail> chiTiet() {
+        List<Object> objList = orderService.getChiTietHoaDon();
+        List<OrderDetail> detailList = new ArrayList<>();
+
+        for (Object obj : objList) {
+            OrderDetail detail = new OrderDetail(obj);
+            detailList.add(detail);
+        }
+
+        return detailList;
+    }
 
     @DeleteMapping("/{orderId}")
     public void deleteOrder(@PathVariable Long orderId) {

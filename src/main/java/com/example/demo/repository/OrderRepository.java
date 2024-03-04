@@ -1,12 +1,19 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.Order;
+import com.example.demo.model.OrderDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface  OrderRepository extends JpaRepository<Order, Long> {
  @Query("select MAX(id) from Order")
     int findMaxByID();
+
+    @Query(value = "select o.id,o.order_date,o.total_amount,o.ban_id,p.product_name,oi.quantity,p.price from orders o join order_items oi on oi.order_id = o.id JOIN product p ON p.id = oi.product_id;\n", nativeQuery = true)
+     List<Object> getOrderDetail();
+
 }
