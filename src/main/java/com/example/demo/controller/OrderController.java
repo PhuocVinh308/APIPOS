@@ -43,9 +43,10 @@ public class OrderController {
     public Object layIDMax(){
 
         int maxID = orderService.getMaxID();
-        return new Object() {
-            public int id = maxID;
-        };
+        return maxID;
+//        return new Object() {
+//            public int id = maxID;
+//        };
     }
 
     @GetMapping("/chitiethoadon")
