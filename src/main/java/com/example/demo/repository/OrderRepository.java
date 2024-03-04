@@ -21,4 +21,8 @@ public interface  OrderRepository extends JpaRepository<Order, Long> {
             "FROM orders o\n" +
             "WHERE DATE(o.order_date) = DATE(CURRENT_DATE())",nativeQuery = true)
     int getDoanhThu();
+    @Query(value = "SELECT  SUM(o.total_amount) AS 'Tong doanh thu'\n" +
+            "FROM orders o\n" +
+            "WHERE month(o.order_date) = month(CURRENT_DATE()) and year(o.order_date) = year(CURRENT_DATE())",nativeQuery = true)
+    int getDoanhThuThang();
 }

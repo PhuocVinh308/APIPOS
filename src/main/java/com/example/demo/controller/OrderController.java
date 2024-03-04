@@ -6,6 +6,8 @@ import com.example.demo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +57,17 @@ public class OrderController {
 
         return new Object(){
             public int tongDoanhThu = doanhThu;
+        };
+    }
+
+    @GetMapping("doanhthuthang")
+    public Object ketThang(){
+       int doanhThu = orderService.getDoanhThuThang();
+        int thangHienTai = LocalDate.now().getMonthValue(); // Lấy giá trị tháng hiện tại
+
+        return new Object(){
+            public int tongDoanhThu = doanhThu;
+            public int thang = thangHienTai;
         };
     }
     @GetMapping("/chitiethoadon")

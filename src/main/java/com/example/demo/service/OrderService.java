@@ -62,4 +62,8 @@ public class OrderService {
     public int getDoanhThu() {
         return orderRepository.getDoanhThu();
     }
+
+    public int getDoanhThuThang() {
+        return orderRepository.getDoanhThuThang();
+    }
 }
