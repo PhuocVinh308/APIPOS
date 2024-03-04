@@ -58,4 +58,8 @@ public class OrderService {
     public List<Object> getChiTietHoaDon() {
        return orderRepository.getOrderDetail();
     }
+
+    public int getDoanhThu() {
+        return orderRepository.getDoanhThu();
+    }
 }

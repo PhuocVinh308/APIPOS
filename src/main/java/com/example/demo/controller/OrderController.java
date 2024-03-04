@@ -49,6 +49,14 @@ public class OrderController {
 //        };
     }
 
+    @GetMapping("doanhthungay")
+    public Object ketNgay(){
+        int doanhThu = orderService.getDoanhThu();
+
+        return new Object(){
+            public int tongDoanhThu = doanhThu;
+        };
+    }
     @GetMapping("/chitiethoadon")
     public List<OrderDetail> chiTiet() {
         List<Object> objList = orderService.getChiTietHoaDon();
