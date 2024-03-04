@@ -38,9 +38,15 @@ public class OrderController {
         return orderService.updateOrder(orderId, updatedOrder);
     }
     @GetMapping("/max")
-    public int layIDMax(){
-        return orderService.getMaxID();
+    public Object layIDMax(){
+
+        int maxID = orderService.getMaxID();
+        return new Object() {
+            public int id = maxID;
+        };
     }
+
+
     @DeleteMapping("/{orderId}")
     public void deleteOrder(@PathVariable Long orderId) {
         orderService.deleteOrder(orderId);
