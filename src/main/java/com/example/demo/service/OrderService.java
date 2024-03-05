@@ -1,9 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Order;
-import com.example.demo.model.OrderDetail;
 import com.example.demo.repository.OrderRepository;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +61,11 @@ public class OrderService {
         return orderRepository.getDoanhThu();
     }
 
-    public int getDoanhThuThang() {
+    public List<Object> getDoanhThuThang() {
         return orderRepository.getDoanhThuThang();
+    }
+
+    public List<Object> getDaMua() {
+        return orderRepository.getDaMua();
     }
 }

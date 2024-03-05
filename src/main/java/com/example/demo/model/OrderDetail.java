@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Getter;
@@ -8,7 +9,6 @@ import lombok.Setter;
 import java.util.Date;
 @Getter
 @Setter
-
 public class OrderDetail {
 
     private Long id;

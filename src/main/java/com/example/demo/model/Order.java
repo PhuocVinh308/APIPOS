@@ -17,7 +17,6 @@ public class Order {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "ban_id")
     private Ban ban;
 
     @JsonIgnore

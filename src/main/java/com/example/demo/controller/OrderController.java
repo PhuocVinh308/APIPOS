@@ -6,8 +6,7 @@ import com.example.demo.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.Month;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,16 +59,26 @@ public class OrderController {
         };
     }
 
-    @GetMapping("doanhthuthang")
-    public Object ketThang(){
-       int doanhThu = orderService.getDoanhThuThang();
-        int thangHienTai = LocalDate.now().getMonthValue(); // Lấy giá trị tháng hiện tại
+    @GetMapping("/doanhthuthang")
+    public List<Object> ketThang() {
+        List<Object> dtTheoThang = new ArrayList<>();
+        List<Object> doanhThu = orderService.getDoanhThuThang();
+        for (Object obj : doanhThu) {
 
-        return new Object(){
-            public int tongDoanhThu = doanhThu;
-            public int thang = thangHienTai;
-        };
+            Object[] objArray = (Object[]) obj;
+            int thang = (int) objArray[0];
+            double tongDoanhThu = (double) objArray[1];
+            dtTheoThang.add(new Object() {
+                public int thangValue = thang;
+                public double tongDoanhThuValue = tongDoanhThu;
+            });
+        }
+
+
+        return dtTheoThang;
     }
+
+
     @GetMapping("/chitiethoadon")
     public List<OrderDetail> chiTiet() {
         List<Object> objList = orderService.getChiTietHoaDon();
@@ -83,6 +92,21 @@ public class OrderController {
         return detailList;
     }
 
+    @GetMapping("thucuongyeuthich")
+    public List<Object> thucUongYeuThich() {
+        List<Object> thucUong = new ArrayList<>();
+        List<Object> daMua = orderService.getDaMua();
+        for (Object obj : daMua) {
+            Object[] objArray = (Object[]) obj;
+            BigDecimal soluong = (BigDecimal) objArray[0];
+            String tenOrder = (String) objArray[1];
+            thucUong.add(new Object() {
+                public BigDecimal soLuongValue = soluong;
+                public String tenNuoc = tenOrder;
+            });
+        }
+        return thucUong;
+    }
     @DeleteMapping("/{orderId}")
     public void deleteOrder(@PathVariable Long orderId) {
         orderService.deleteOrder(orderId);

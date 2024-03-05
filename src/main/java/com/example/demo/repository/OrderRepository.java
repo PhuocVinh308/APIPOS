@@ -1,8 +1,6 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.Order;
-import com.example.demo.model.OrderDetail;
-import lombok.Value;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -21,8 +19,13 @@ public interface  OrderRepository extends JpaRepository<Order, Long> {
             "FROM orders o\n" +
             "WHERE DATE(o.order_date) = DATE(CURRENT_DATE())",nativeQuery = true)
     int getDoanhThu();
-    @Query(value = "SELECT  SUM(o.total_amount) AS 'Tong doanh thu'\n" +
+    @Query(value = "SELECT month(o.order_date),SUM(o.total_amount) AS 'Tong doanh thu'\n" +
             "FROM orders o\n" +
-            "WHERE month(o.order_date) = month(CURRENT_DATE()) and year(o.order_date) = year(CURRENT_DATE())",nativeQuery = true)
-    int getDoanhThuThang();
+            "group by month(o.order_date) order by month(o.order_date) asc",nativeQuery = true)
+    List<Object> getDoanhThuThang();
+@Query(value = "SELECT SUM(oi.quantity) AS total_quantity,p.product_name\n" +
+        "FROM order_items oi\n" +
+        "JOIN product p ON p.id = oi.product_id\n" +
+        "GROUP BY oi.product_id",nativeQuery = true)
+    List<Object> getDaMua();
 }
