@@ -44,6 +44,7 @@ public class ProductController {
                 // Đường dẫn đến thư mục để lưu hình ảnh
           //      String destinationPath = "E:\\Image\\" + product.getProductName() + ".jpg";
                 String destinationPath = System.getProperty("user.dir") + File.separator + "images" + File.separator + product.getProductName() + ".jpg";
+
                 productService.saveImageFromUrl(product.getLinkImage(), destinationPath);
                 product.setLinkImage(destinationPath);
             } catch (IOException e) {
