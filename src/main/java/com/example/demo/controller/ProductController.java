@@ -1,14 +1,13 @@
 package com.example.demo.controller;
 
+import com.example.demo.model.Product;
+import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.model.Product;
-import com.example.demo.service.ProductService;
-
+import java.io.IOException;
 import java.util.List;
 @RestController
 @RequestMapping("/api/products")
@@ -35,10 +34,24 @@ public class ProductController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    
-    
-    @PostMapping
+
+
+    @PostMapping("/products")
     public ResponseEntity<Product> saveOrUpdateProduct(@RequestBody Product product) {
+        if (product.getLinkImage() != null && !product.getLinkImage().isEmpty()) {
+            try {
+                // Đường dẫn đến thư mục để lưu hình ảnh
+                String destinationPath = "E:\\Image\\" + product.getProductName() + ".jpg";
+                productService.saveImageFromUrl(product.getLinkImage(), destinationPath);
+                product.setLinkImage(destinationPath);
+            } catch (IOException e) {
+                // Xử lý ngoại lệ khi không thể lưu hình ảnh
+                e.printStackTrace();
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        // Lưu hoặc cập nhật sản phẩm vào cơ sở dữ liệu
         Product savedProduct = productService.saveOrUpdateProduct(product);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }

@@ -66,11 +66,11 @@ public class OrderController {
         for (Object obj : doanhThu) {
 
             Object[] objArray = (Object[]) obj;
-            int thang = (int) objArray[0];
-            double tongDoanhThu = (double) objArray[1];
+            int thangValue = (int) objArray[0];
+            double tongDoanhThuValue = (double) objArray[1];
             dtTheoThang.add(new Object() {
-                public int thangValue = thang;
-                public double tongDoanhThuValue = tongDoanhThu;
+                public int thang = thangValue;
+                public double tongDoanhThu = tongDoanhThuValue;
             });
         }
 
@@ -101,7 +101,7 @@ public class OrderController {
             BigDecimal soluong = (BigDecimal) objArray[0];
             String tenOrder = (String) objArray[1];
             thucUong.add(new Object() {
-                public BigDecimal soLuongValue = soluong;
+                public BigDecimal soLuong = soluong;
                 public String tenNuoc = tenOrder;
             });
         }
