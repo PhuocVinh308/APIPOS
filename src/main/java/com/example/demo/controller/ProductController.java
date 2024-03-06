@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 @RestController
@@ -41,7 +42,8 @@ public class ProductController {
         if (product.getLinkImage() != null && !product.getLinkImage().isEmpty()) {
             try {
                 // Đường dẫn đến thư mục để lưu hình ảnh
-                String destinationPath = "E:\\Image\\" + product.getProductName() + ".jpg";
+          //      String destinationPath = "E:\\Image\\" + product.getProductName() + ".jpg";
+                String destinationPath = System.getProperty("user.dir") + File.separator + "images" + File.separator + product.getProductName() + ".jpg";
                 productService.saveImageFromUrl(product.getLinkImage(), destinationPath);
                 product.setLinkImage(destinationPath);
             } catch (IOException e) {
