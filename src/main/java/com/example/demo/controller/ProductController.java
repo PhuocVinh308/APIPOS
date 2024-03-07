@@ -37,7 +37,7 @@ public class ProductController {
 
 
 
-    @PostMapping("/products")
+    @PostMapping()
     public ResponseEntity<Product> saveOrUpdateProduct(@RequestBody Product product) {
         if (product.getLinkImage() != null && !product.getLinkImage().isEmpty()) {
             try {
