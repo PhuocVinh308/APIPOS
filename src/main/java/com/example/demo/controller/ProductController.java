@@ -43,7 +43,7 @@ public class ProductController {
     public ResponseEntity<Product> saveOrUpdateProduct(@RequestBody Product product) {
         if (product.getLinkImage() != null && !product.getLinkImage().isEmpty()) {
             try {
-                String destinationPath = System.getProperty("user.dir") + File.separator + "images" + File.separator + product.getProductName() + ".jpg";
+                String destinationPath = System.getProperty("user.dir") + File.separator + "images" + File.separator + product.getId().toString() + ".jpg";
                 productService.saveImageFromUrl(product.getLinkImage(), destinationPath);
                 product.setLinkLocal(destinationPath);
             } catch (IOException e) {
