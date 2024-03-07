@@ -42,6 +42,11 @@ public class ProductService {
     }
 
     public void saveImageFromUrl(String imageUrl, String destinationPath) throws IOException {
+        // Kiểm tra nếu imageUrl không phải là null
+        if (imageUrl == null || imageUrl.isEmpty()) {
+            throw new IllegalArgumentException("Đường dẫn hình ảnh là null hoặc trống");
+        }
+
         // Tạo đường dẫn đến thư mục lưu trữ hình ảnh
         Path directory = Paths.get(destinationPath).getParent();
         if (!Files.exists(directory)) {
@@ -65,4 +70,5 @@ public class ProductService {
             throw e;
         }
     }
+
 }

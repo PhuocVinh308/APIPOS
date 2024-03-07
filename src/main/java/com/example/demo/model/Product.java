@@ -11,7 +11,6 @@ import lombok.Data;
 @Data
 @Table(name = "product")
 @Entity
-
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,35 +19,30 @@ public class Product {
 
 	@Column(name = "productName")
 	private String productName;
+
 	@Column(name = "price")
 	private double price;
-    private String linkImage;
+
+	private String linkLocal;
+	private String linkImage;
 
 	public Product() {
 	}
-	
-	
+
+	public Product(Long id, String productName, double price, String linkLocal, String linkURL) {
+		this.id = id;
+		this.productName = productName;
+		this.price = price;
+		this.linkLocal = linkLocal;
+		this.linkImage = linkURL;
+	}
 
 	public Product(Long id, String productName, double price, String linkImage) {
 		this.id = id;
 		this.productName = productName;
 		this.price = price;
-		this.linkImage = linkImage;
+		this.linkLocal = linkImage;
 	}
-
-
-
-	public String getLinkImage() {
-		return linkImage;
-	}
-
-
-
-	public void setLinkImage(String linkImage) {
-		this.linkImage = linkImage;
-	}
-
-
 
 	public Product(Long id, String productName, double price) {
 		this.id = id;
@@ -56,7 +50,20 @@ public class Product {
 		this.price = price;
 	}
 
+	public void setLinkLocal(String linkLocal) {
+		this.linkLocal = linkLocal;
+	}
 
+	public void setLinkURL(String linkURL) {
+		this.linkImage = linkURL;
+	}
+
+	public String getLinkLocal() {
+		return linkLocal;
+	}
+
+	public String getLinkURL() {
+		return linkImage;	}
 
 	public void setId(Long id) {
 		this.id = id;
@@ -81,6 +88,4 @@ public class Product {
 	public String getProductName() {
 		return productName;
 	}
-
-	
 }

@@ -41,14 +41,10 @@ public class ProductController {
     public ResponseEntity<Product> saveOrUpdateProduct(@RequestBody Product product) {
         if (product.getLinkImage() != null && !product.getLinkImage().isEmpty()) {
             try {
-                // Đường dẫn đến thư mục để lưu hình ảnh
-          //      String destinationPath = "E:\\Image\\" + product.getProductName() + ".jpg";
                 String destinationPath = System.getProperty("user.dir") + File.separator + "images" + File.separator + product.getProductName() + ".jpg";
-
                 productService.saveImageFromUrl(product.getLinkImage(), destinationPath);
-                product.setLinkImage(destinationPath);
+                product.setLinkLocal(destinationPath);
             } catch (IOException e) {
-                // Xử lý ngoại lệ khi không thể lưu hình ảnh
                 e.printStackTrace();
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
