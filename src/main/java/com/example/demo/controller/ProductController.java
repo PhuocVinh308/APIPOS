@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/products")
 @CrossOrigin(origins = "http://10.12.44.29:3000") //Chi nh Cros cho IP FE
@@ -57,9 +59,30 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
-        productService.deleteProductById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        Optional<Product> productOptional = productService.getProductById(id);
+
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            if (product.getLinkLocal() != null && !product.getLinkLocal().isEmpty()) {
+                File imageFile = new File(product.getLinkLocal());
+                if (imageFile.exists()) {
+                    if (imageFile.delete()) {
+                        System.out.println("Deleted the file: " + imageFile.getName());
+                    } else {
+                        System.out.println("Failed to delete the file: " + imageFile.getName());
+                    }
+                }
+            }
+
+            // Delete the product from the database
+            productService.deleteProductById(id);
+
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
+
     
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
