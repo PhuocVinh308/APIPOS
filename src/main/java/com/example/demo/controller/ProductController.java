@@ -41,9 +41,10 @@ public class ProductController {
 
     @PostMapping()
     public ResponseEntity<Product> saveOrUpdateProduct(@RequestBody Product product) {
+        String tenFile = (String) product.getId().toString();
         if (product.getLinkImage() != null && !product.getLinkImage().isEmpty()) {
             try {
-                String destinationPath = System.getProperty("user.dir") + File.separator + "images" + File.separator + product.getId().toString() + ".jpg";
+                String destinationPath = System.getProperty("user.dir") + File.separator + "images" + File.separator + tenFile + ".jpg";
                 productService.saveImageFromUrl(product.getLinkImage(), destinationPath);
                 product.setLinkLocal(destinationPath);
             } catch (IOException e) {
