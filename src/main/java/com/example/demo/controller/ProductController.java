@@ -91,6 +91,22 @@ public class ProductController {
                     existingProduct.setProductName(updatedProduct.getProductName());
                     existingProduct.setPrice(updatedProduct.getPrice());
                     existingProduct.setLinkImage(updatedProduct.getLinkImage());
+                    try {
+                        String destinationPath = System.getProperty("user.dir") + File.separator + "images" + File.separator + existingProduct.getProductName() + ".jpg";
+                        File imageFile = new File(existingProduct.getLinkLocal());
+                        if (imageFile.exists()) {
+                            if (imageFile.delete()) {
+                                System.out.println("Deleted the file: " + imageFile.getName());
+                            } else {
+                                System.out.println("Failed to delete the file: " + imageFile.getName());
+                            }
+                        }
+                        productService.saveImageFromUrl(existingProduct.getLinkImage(), destinationPath);
+                        existingProduct.setLinkLocal(destinationPath);
+                    }catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     Product savedProduct = productService.saveOrUpdateProduct(existingProduct);
 
                     return new ResponseEntity<>(savedProduct, HttpStatus.OK);
