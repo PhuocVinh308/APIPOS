@@ -7,7 +7,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Data
 @Table(name = "product")
 @Entity
@@ -44,6 +48,14 @@ public class Product {
 		this.linkLocal = linkImage;
 	}
 
+	public String getLinkImage() {
+		return linkImage;
+	}
+
+	public void setLinkImage(String linkImage) {
+		this.linkImage = linkImage;
+	}
+
 	public Product(Long id, String productName, double price) {
 		this.id = id;
 		this.productName = productName;
@@ -54,16 +66,13 @@ public class Product {
 		this.linkLocal = linkLocal;
 	}
 
-	public void setLinkURL(String linkURL) {
-		this.linkImage = linkURL;
-	}
+
 
 	public String getLinkLocal() {
 		return linkLocal;
 	}
 
-	public String getLinkURL() {
-		return linkImage;	}
+
 
 	public void setId(Long id) {
 		this.id = id;
