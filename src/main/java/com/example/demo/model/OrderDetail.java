@@ -18,7 +18,6 @@ public class OrderDetail {
     private String productName;
     private Integer quantity;
     private Double price;
-    private String phoneNumber;
 
     public OrderDetail(Object obj) {
         Object[] data = (Object[]) obj;
@@ -29,6 +28,5 @@ public class OrderDetail {
         this.productName = (String) data[4];
         this.quantity = (Integer) data[5];
         this.price = (Double) data[6];
-        this.phoneNumber = (String) data[7];
     }
 }
