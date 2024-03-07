@@ -27,16 +27,17 @@ public class Order {
     private Date orderDate;
 
     private double totalAmount;
-
+    private String phoneNumber;
     public Order() {
         this.orderDate = new Date();
     }
 
-    public Order(Long id, Ban ban, List<OrderItem> orderItems, Date orderDate) {
+    public Order(Long id, Ban ban, List<OrderItem> orderItems, Date orderDate, String phoneNumber) {
         this.id = id;
         this.ban = ban;
         this.orderItems = orderItems;
         this.orderDate = orderDate;
+        this.phoneNumber = phoneNumber;
     }
 
     public Long getId() {
@@ -75,5 +76,13 @@ public class Order {
         return totalAmount;
     }
 
-   
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+
 }
