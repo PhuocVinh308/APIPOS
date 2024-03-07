@@ -37,7 +37,10 @@ public class ProductController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-
+   @GetMapping("max")
+   public Long getIDMax(){
+        return productService.getMaxId();
+   }
 
     @PostMapping()
     public ResponseEntity<Product> saveOrUpdateProduct(@RequestBody Product product) {

@@ -71,4 +71,7 @@ public class ProductService {
         }
     }
 
+    public Long getMaxId() {
+        return productRepository.getMaxID();
+    }
 }
