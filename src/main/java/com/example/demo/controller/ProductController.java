@@ -83,21 +83,28 @@ public class ProductController {
         }
     }
 
-    
+
     @PutMapping("/{id}")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
         return productService.getProductById(id)
                 .map(existingProduct -> {
+                    // Delete the existing image file if it exists
+                    if (existingProduct.getLinkLocal() != null && !existingProduct.getLinkLocal().isEmpty()) {
+                        File existingImageFile = new File(existingProduct.getLinkLocal());
+                        if (existingImageFile.exists() && existingImageFile.delete()) {
+                            System.out.println("Deleted the existing image file: " + existingImageFile.getName());
+                        }
+                    }
                     existingProduct.setProductName(updatedProduct.getProductName());
                     existingProduct.setPrice(updatedProduct.getPrice());
                     existingProduct.setLinkImage(updatedProduct.getLinkImage());
                     Product savedProduct = productService.saveOrUpdateProduct(existingProduct);
-
                     return new ResponseEntity<>(savedProduct, HttpStatus.OK);
                 })
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    
+
+
 }
 
