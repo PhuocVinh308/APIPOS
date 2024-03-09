@@ -37,7 +37,7 @@ public class ProductController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-   @GetMapping("max")
+   @GetMapping("/max")
    public Long getIDMax(){
         return productService.getMaxId();
    }
