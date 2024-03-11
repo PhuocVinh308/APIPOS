@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Order;
+import com.example.demo.model.OrderDetail;
 import com.example.demo.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,5 +68,9 @@ public class OrderService {
 
     public List<Object> getDaMua() {
         return orderRepository.getDaMua();
+    }
+
+    public List<OrderDetail> getXuatExcel() {
+   return orderRepository.getXuatExcel();
     }
 }

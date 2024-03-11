@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
@@ -48,7 +47,9 @@ public class OrderController {
 //        return new Object() {
 //            public int id = maxID;
 //        };
+
     }
+
 
     @GetMapping("doanhthungay")
     public Object ketNgay(){
