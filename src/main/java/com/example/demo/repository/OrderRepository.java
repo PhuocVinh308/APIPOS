@@ -26,6 +26,6 @@ public interface  OrderRepository extends JpaRepository<Order, Long> {
 @Query(value = "SELECT SUM(oi.quantity) AS total_quantity,p.product_name\n" +
         "FROM order_items oi\n" +
         "JOIN product p ON p.id = oi.product_id\n" +
-        "GROUP BY oi.product_id",nativeQuery = true)
+        "GROUP BY oi.product_id order by total_quantity desc ",nativeQuery = true)
     List<Object> getDaMua();
 }
