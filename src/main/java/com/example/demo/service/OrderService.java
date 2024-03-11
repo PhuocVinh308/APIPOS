@@ -70,7 +70,7 @@ public class OrderService {
         return orderRepository.getDaMua();
     }
 
-    public List<OrderDetail> getXuatExcel() {
+    public List<Object> getXuatExcel() {
    return orderRepository.getXuatExcel();
     }
 }

@@ -3,10 +3,19 @@ package com.example.demo.controller;
 import com.example.demo.model.Order;
 import com.example.demo.model.OrderDetail;
 import com.example.demo.service.OrderService;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 @RestController
@@ -49,9 +58,60 @@ public class OrderController {
 //        };
 
     }
+    @GetMapping("/xuatExcel")
+    public void xuatExcel(HttpServletResponse response) throws IOException {
+        List<Object> orderDetails = orderService.getXuatExcel();
+        LocalDateTime now = LocalDateTime.now();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        String formattedDate = now.format(formatter);
+        String sheetName = "Doanhthu_" + formattedDate.replace(':', '_');
+
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet(sheetName);
+
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("Mã hoá đơn");
+        headerRow.createCell(1).setCellValue("Tên sản phẩm");
+        headerRow.createCell(2).setCellValue("Số luợng");
+        headerRow.createCell(3).setCellValue("Giá");
+        headerRow.createCell(4).setCellValue("Thời gian");
+
+        int rowNum = 1;
+        for (Object obj : orderDetails) {
+            Row row = sheet.createRow(rowNum++);
+            Object[] objArray = (Object[]) obj;
+            row.createCell(0).setCellValue((long) objArray[0]);
+            row.createCell(1).setCellValue((String) objArray[1]);
+            row.createCell(2).setCellValue((int) objArray[2]);
+            row.createCell(3).setCellValue((double) objArray[3]);
+            if (objArray[4] instanceof Timestamp) {
+                Timestamp timestamp = (Timestamp) objArray[4];
+                LocalDateTime dateTime = timestamp.toLocalDateTime();
+                String formattedTime = dateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+                row.createCell(4).setCellValue(formattedTime);
+            } else if (objArray[4] instanceof String) {
+                LocalDateTime dateTime = LocalDateTime.parse((String) objArray[4]);
+                String formattedTime = dateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+                row.createCell(4).setCellValue(formattedTime);
+            }
 
 
-    @GetMapping("doanhthungay")
+
+        }
+
+        for (int i = 0; i < headerRow.getLastCellNum(); i++) {
+            sheet.autoSizeColumn(i);
+        }
+        // Đặt các header cho file Excel
+        response.setHeader("Content-Disposition", "attachment; filename="+ sheetName+".xlsx");
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+        // Ghi workbook vào HttpServletResponse
+        workbook.write(response.getOutputStream());
+        workbook.close();
+    }
+    @GetMapping("/doanhthungay")
     public Object ketNgay(){
         int doanhThu = orderService.getDoanhThu();
 
