@@ -4,9 +4,8 @@ import com.example.demo.model.Order;
 import com.example.demo.model.OrderDetail;
 import com.example.demo.service.OrderService;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -70,14 +69,29 @@ public class OrderController {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet(sheetName);
 
+        // Merge cells for report header
+        CellRangeAddress mergedRegion = new CellRangeAddress(0, 0, 0, 4); // Merge cells from A1 to E1
+        sheet.addMergedRegion(mergedRegion);
         Row headerRow = sheet.createRow(0);
-        headerRow.createCell(0).setCellValue("Mã hoá đơn");
-        headerRow.createCell(1).setCellValue("Tên sản phẩm");
-        headerRow.createCell(2).setCellValue("Số luợng");
-        headerRow.createCell(3).setCellValue("Giá");
-        headerRow.createCell(4).setCellValue("Thời gian");
+        Cell mergedCell = headerRow.createCell(0);
+        mergedCell.setCellValue("BÁO CÁO DOANH THU NGÀY");
 
-        int rowNum = 1;
+        // Style for header row
+        CellStyle headerStyle = workbook.createCellStyle();
+        headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
+        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+        mergedCell.setCellStyle(headerStyle);
+
+        // Create header row for order details
+        Row columnHeaderRow = sheet.createRow(1);
+        columnHeaderRow.createCell(0).setCellValue("Mã hoá đơn");
+        columnHeaderRow.createCell(1).setCellValue("Tên sản phẩm");
+        columnHeaderRow.createCell(2).setCellValue("Số lượng");
+        columnHeaderRow.createCell(3).setCellValue("Giá");
+        columnHeaderRow.createCell(4).setCellValue("Thời gian");
+
+        int rowNum = 2;
         for (Object obj : orderDetails) {
             Row row = sheet.createRow(rowNum++);
             Object[] objArray = (Object[]) obj;
@@ -95,10 +109,24 @@ public class OrderController {
                 String formattedTime = dateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
                 row.createCell(4).setCellValue(formattedTime);
             }
-
-
-
         }
+
+        // Adjust column widths
+        for (int i = 0; i < columnHeaderRow.getLastCellNum(); i++) {
+            sheet.autoSizeColumn(i);
+        }
+
+
+
+
+
+
+
+        Row exportInfoRow = sheet.createRow(rowNum + 1);
+        exportInfoRow.createCell(0).setCellValue("Người xuất:");
+        exportInfoRow.createCell(1).setCellValue("Admin");
+        exportInfoRow.createCell(3).setCellValue("Ngày xuất:");
+        exportInfoRow.createCell(4).setCellValue(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
         for (int i = 0; i < headerRow.getLastCellNum(); i++) {
             sheet.autoSizeColumn(i);
