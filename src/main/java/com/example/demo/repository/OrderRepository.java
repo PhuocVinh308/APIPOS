@@ -28,7 +28,7 @@ public interface  OrderRepository extends JpaRepository<Order, Long> {
         "JOIN product p ON p.id = oi.product_id\n" +
         "GROUP BY oi.product_id order by total_quantity desc ",nativeQuery = true)
     List<Object> getDaMua();
-@Query(value = "SELECT oi.id,p.product_name,oi.quantity,p.price,o.order_date\n" +
+@Query(value = "SELECT o.id,p.product_name,oi.quantity,p.price,o.order_date\n" +
         "FROM order_items oi\n" +
         "JOIN product p ON p.id = oi.product_id\n" +
         "JOIN orders o on o.id = oi.order_id\n" +
