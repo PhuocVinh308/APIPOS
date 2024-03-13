@@ -51,12 +51,12 @@ create database webnl
 - `PUT /orders/{id}`: Cập nhật thông tin của một đơn hàng.
 - `DELETE /orders/{id}`: Xóa một đơn hàng.
 #### Thống kê và báo cáo 
-- `GET /api/orders/max: Lấy ID đơn hàng tối đa. Để thêm order-items
-- `GET /api/orders/xuatExcel: Xuất chi tiết đơn hàng ra tệp Excel.
-- `GET /api/orders/doanhthungay: Lấy tổng doanh thu trong ngày.
-- `GET /api/orders/doanhthuthang: Lấy tổng doanh thu cho mỗi tháng.
-- `GET /api/orders/chitiethoadon: Lấy thông tin chi tiết về các đơn hàng.
-- GET /api/orders/thucuongyeuthich: Lấy danh sách đồ uống phổ biến dựa trên lịch sử đơn hàng.
+- `GET /api/orders/max`: Lấy ID đơn hàng tối đa. Để thêm order-items
+- `GET /api/orders/xuatExcel`: Xuất chi tiết đơn hàng ra tệp Excel.
+- `GET /api/orders/doanhthungay`: Lấy tổng doanh thu trong ngày.
+- `GET /api/orders/doanhthuthang`: Lấy tổng doanh thu cho mỗi tháng.
+- `GET /api/orders/chitiethoadon`: Lấy thông tin chi tiết về các đơn hàng.
+- GET /api/orders/thucuongyeuthich`: Lấy danh sách đồ uống phổ biến dựa trên lịch sử đơn hàng.
 #### Thông tin sản phẩm trong hoá đơn
 - `GET /order-items`: Lấy danh sách sản phẩm trong hoá đơn.
 - `GET /order-items/{id}`: Lấy thông tin chi tiết của một sản phẩm trong hoá đơn theo ID.
