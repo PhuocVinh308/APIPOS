@@ -1,12 +1,12 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Order;
-import com.example.demo.model.OrderDetail;
 import com.example.demo.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -72,5 +72,9 @@ public class OrderService {
 
     public List<Object> getXuatExcel() {
    return orderRepository.getXuatExcel();
+    }
+
+    public List<Map<String,Object>> getXuatExcelMap() {
+        return orderRepository.getXuatExcelMap();
     }
 }

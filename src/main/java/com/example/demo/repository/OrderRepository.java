@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface  OrderRepository extends JpaRepository<Order, Long> {
@@ -34,4 +35,11 @@ public interface  OrderRepository extends JpaRepository<Order, Long> {
         "JOIN orders o on o.id = oi.order_id\n" +
         "where date(o.order_date) = date(now())",nativeQuery = true)
     List<Object> getXuatExcel();
+
+@Query(value = "SELECT o.id, p.product_name, oi.quantity, p.price, substring(convert(o.order_date, char),12,8) as order_date\n" +
+        "FROM order_items oi\n" +
+        "JOIN product p ON p.id = oi.product_id\n" +
+        "JOIN orders o ON o.id = oi.order_id\n" +
+        "WHERE DATE(o.order_date) = DATE(NOW()) order by o.id asc",nativeQuery = true)
+List<Map<String,Object>> getXuatExcelMap();
 }

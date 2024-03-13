@@ -3,20 +3,20 @@ package com.example.demo.controller;
 import com.example.demo.model.Order;
 import com.example.demo.model.OrderDetail;
 import com.example.demo.service.OrderService;
+import com.example.demo.utils.jasper.JasperUtils;
+import com.example.demo.utils.jasper.ReportType;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import net.sf.jasperreports.engine.JRParameter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
@@ -57,87 +57,46 @@ public class OrderController {
 //        };
 
     }
-    @GetMapping("/xuatExcel")
-    public void xuatExcel(HttpServletResponse response) throws IOException {
-        List<Object> orderDetails = orderService.getXuatExcel();
-        LocalDateTime now = LocalDateTime.now();
 
+@GetMapping("/xuatExcel")
+    public ResponseEntity<ByteArrayResource> xuatExcel(HttpServletResponse response) {
+
+        //Hàm get list doanh thu b vào đây
+        List<Map<String,Object>> list = orderService.getXuatExcelMap();
+
+
+        LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
         String formattedDate = now.format(formatter);
-        String sheetName = "Doanhthu_" + formattedDate.replace(':', '_');
 
-        Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet(sheetName);
-
-        // Merge cells for report header
-        CellRangeAddress mergedRegion = new CellRangeAddress(0, 0, 0, 4); // Merge cells from A1 to E1
-        sheet.addMergedRegion(mergedRegion);
-        Row headerRow = sheet.createRow(0);
-        Cell mergedCell = headerRow.createCell(0);
-        mergedCell.setCellValue("BÁO CÁO DOANH THU NGÀY");
-
-        // Style for header row
-        CellStyle headerStyle = workbook.createCellStyle();
-        headerStyle.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
-        headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        headerStyle.setAlignment(HorizontalAlignment.CENTER);
-        mergedCell.setCellStyle(headerStyle);
-
-        // Create header row for order details
-        Row columnHeaderRow = sheet.createRow(1);
-        columnHeaderRow.createCell(0).setCellValue("Mã hoá đơn");
-        columnHeaderRow.createCell(1).setCellValue("Tên sản phẩm");
-        columnHeaderRow.createCell(2).setCellValue("Số lượng");
-        columnHeaderRow.createCell(3).setCellValue("Giá");
-        columnHeaderRow.createCell(4).setCellValue("Thời gian");
-
-        int rowNum = 2;
-        for (Object obj : orderDetails) {
-            Row row = sheet.createRow(rowNum++);
-            Object[] objArray = (Object[]) obj;
-            row.createCell(0).setCellValue((long) objArray[0]);
-            row.createCell(1).setCellValue((String) objArray[1]);
-            row.createCell(2).setCellValue((int) objArray[2]);
-            row.createCell(3).setCellValue((double) objArray[3]);
-            if (objArray[4] instanceof Timestamp) {
-                Timestamp timestamp = (Timestamp) objArray[4];
-                LocalDateTime dateTime = timestamp.toLocalDateTime();
-                String formattedTime = dateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-                row.createCell(4).setCellValue(formattedTime);
-            } else if (objArray[4] instanceof String) {
-                LocalDateTime dateTime = LocalDateTime.parse((String) objArray[4]);
-                String formattedTime = dateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-                row.createCell(4).setCellValue(formattedTime);
-            }
-        }
-
-        // Adjust column widths
-        for (int i = 0; i < columnHeaderRow.getLastCellNum(); i++) {
-            sheet.autoSizeColumn(i);
-        }
+        String templatePath = "templates/report/DoanhThu.jasper";
+        Map<String, Object> parameters = new HashMap<>();
+        Locale locale = new Locale("vi", "VN");
+        parameters.put(JRParameter.REPORT_LOCALE, locale);
+        parameters.put("NGUOI_XUAT", "Admin");
+        parameters.put("NGAY_XUAT", formattedDate);
+        return JasperUtils.getReportResponseEntity(templatePath, parameters, list, ReportType.XLSX);
+    }
 
 
+    @GetMapping("/xuatPDF")
+    public ResponseEntity<ByteArrayResource> xuatPDF(HttpServletResponse response) {
+
+        //Hàm get list doanh thu b vào đây
+        List<Map<String,Object>> list = orderService.getXuatExcelMap();
 
 
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        String formattedDate = now.format(formatter);
 
-
-
-        Row exportInfoRow = sheet.createRow(rowNum + 1);
-        exportInfoRow.createCell(0).setCellValue("Người xuất:");
-        exportInfoRow.createCell(1).setCellValue("Admin");
-        exportInfoRow.createCell(3).setCellValue("Ngày xuất:");
-        exportInfoRow.createCell(4).setCellValue(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-
-        for (int i = 0; i < headerRow.getLastCellNum(); i++) {
-            sheet.autoSizeColumn(i);
-        }
-        // Đặt các header cho file Excel
-        response.setHeader("Content-Disposition", "attachment; filename="+ sheetName+".xlsx");
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-
-        // Ghi workbook vào HttpServletResponse
-        workbook.write(response.getOutputStream());
-        workbook.close();
+        String templatePath = "templates/report/DoanhThu.jasper";
+        Map<String, Object> parameters = new HashMap<>();
+        Locale locale = new Locale("vi", "VN");
+        parameters.put(JRParameter.REPORT_LOCALE, locale);
+        parameters.put("NGUOI_XUAT", "Admin");
+        parameters.put("NGAY_XUAT", formattedDate);
+        return JasperUtils.getReportResponseEntity(templatePath, parameters, list, ReportType.PDF);
     }
     @GetMapping("/doanhthungay")
     public Object ketNgay(){

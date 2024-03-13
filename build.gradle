@@ -28,6 +28,9 @@ dependencies {
 	implementation 'org.apache.poi:poi:5.2.4'
 	// Thư viện Apache POI OOXML
 	implementation 'org.apache.poi:poi-ooxml:5.2.4'
+	implementation 'com.google.guava:guava:31.0.1-jre'
+	implementation 'com.lowagie:itext:2.1.7'
+	implementation 'net.sf.jasperreports:jasperreports:6.14.0'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
