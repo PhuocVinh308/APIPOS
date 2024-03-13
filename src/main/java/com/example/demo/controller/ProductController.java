@@ -37,15 +37,17 @@ public class ProductController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-   @GetMapping("/max")
-   public Long getIDMax(){
+    @GetMapping("/max")
+    public Long getIDMax(){
         return productService.getMaxId();
-   }
+    }
 
     @PostMapping()
     public ResponseEntity<Product> saveOrUpdateProduct(@RequestBody Product product) {
+        Long productId = product.getId();
+//        String tenFile = (String) product.getId().toString();
+        String tenFile = productId != null ? productId.toString() : "";
         // Truyen ID vao
-        String tenFile = (String) product.getId().toString();
         if (product.getLinkImage() != null && !product.getLinkImage().isEmpty()) {
             try {
                 String destinationPath = System.getProperty("user.dir") + File.separator + "images" + File.separator + tenFile + ".jpg";
@@ -128,4 +130,3 @@ public class ProductController {
 
 
 }
-
