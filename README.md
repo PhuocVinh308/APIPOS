@@ -34,27 +34,29 @@ Khởi tạo database: webnl
 ```
 create database webnl
 ```
-#### CHÚ Ý: PORT 8080 có đang sử dụng không?
+#### CHÚ Ý: PORT 8080 có đang sử dụng không? Cấu hình tài khoản database tại application.properties. Run build.gradle trước khi chạy dự án
 
 
 ### API
-
 #### Sản Phẩm
-
 - `GET /products`: Lấy danh sách sản phẩm.
 - `GET /products/{id}`: Lấy thông tin chi tiết của một sản phẩm theo ID.
 - `POST /products`: Tạo một sản phẩm mới.
 - `PUT /products/{id}`: Cập nhật thông tin của một sản phẩm.
 - `DELETE /products/{id}`: Xóa một sản phẩm.
-
 #### Đơn Hàng
-
 - `GET /orders`: Lấy danh sách đơn hàng.
 - `GET /orders/{id}`: Lấy thông tin của một đơn hàng theo ID.
 - `POST /orders`: Tạo một đơn hàng mới.
 - `PUT /orders/{id}`: Cập nhật thông tin của một đơn hàng.
 - `DELETE /orders/{id}`: Xóa một đơn hàng.
-
+#### Thống kê và báo cáo 
+- `GET /api/orders/max: Lấy ID đơn hàng tối đa. Để thêm order-items
+- `GET /api/orders/xuatExcel: Xuất chi tiết đơn hàng ra tệp Excel.
+- `GET /api/orders/doanhthungay: Lấy tổng doanh thu trong ngày.
+- `GET /api/orders/doanhthuthang: Lấy tổng doanh thu cho mỗi tháng.
+- `GET /api/orders/chitiethoadon: Lấy thông tin chi tiết về các đơn hàng.
+- GET /api/orders/thucuongyeuthich: Lấy danh sách đồ uống phổ biến dựa trên lịch sử đơn hàng.
 #### Thông tin sản phẩm trong hoá đơn
 - `GET /order-items`: Lấy danh sách sản phẩm trong hoá đơn.
 - `GET /order-items/{id}`: Lấy thông tin chi tiết của một sản phẩm trong hoá đơn theo ID.
