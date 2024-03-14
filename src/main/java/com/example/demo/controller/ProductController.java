@@ -45,7 +45,7 @@ public class ProductController {
     @PostMapping()
     public ResponseEntity<Product> saveOrUpdateProduct(@RequestBody Product product) {
 
-        String tenFile = (String) product.getId().toString();
+        String tenFile = String.valueOf(System.currentTimeMillis());
 
         // Truyen ID vao
         if (product.getLinkImage() != null && !product.getLinkImage().isEmpty()) {
