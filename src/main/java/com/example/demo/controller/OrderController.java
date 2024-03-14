@@ -81,15 +81,10 @@ public class OrderController {
 
     @GetMapping("/xuatPDF")
     public ResponseEntity<ByteArrayResource> xuatPDF(HttpServletResponse response) {
-
-        //Hàm get list doanh thu b vào đây
         List<Map<String,Object>> list = orderService.getXuatExcelMap();
-
-
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
         String formattedDate = now.format(formatter);
-
         String templatePath = "templates/report/DoanhThu.jasper";
         Map<String, Object> parameters = new HashMap<>();
         Locale locale = new Locale("vi", "VN");
@@ -140,7 +135,7 @@ public class OrderController {
         return detailList;
     }
 
-    @GetMapping("thucuongyeuthich")
+    @GetMapping("/thucuongyeuthich")
     public List<Object> thucUongYeuThich() {
         List<Object> thucUong = new ArrayList<>();
         List<Object> daMua = orderService.getDaMua();

@@ -42,30 +42,27 @@ public class ProductService {
     }
 
     public void saveImageFromUrl(String imageUrl, String destinationPath) throws IOException {
-        // Kiểm tra nếu imageUrl không phải là null
         if (imageUrl == null || imageUrl.isEmpty()) {
             throw new IllegalArgumentException("Đường dẫn hình ảnh là null hoặc trống");
         }
 
-        // Tạo đường dẫn đến thư mục lưu trữ hình ảnh
+
         Path directory = Paths.get(destinationPath).getParent();
         if (!Files.exists(directory)) {
             try {
                 Files.createDirectories(directory);
             } catch (IOException e) {
-                // Xử lý ngoại lệ khi không thể tạo thư mục
                 e.printStackTrace();
                 throw e;
             }
         }
 
-        // Tải hình ảnh từ URL và lưu vào ổ đĩa
         URL url = new URL(imageUrl);
         try (InputStream in = url.openStream()) {
             Path destination = Paths.get(destinationPath);
             Files.copy(in, destination);
+
         } catch (IOException e) {
-            // Xử lý ngoại lệ khi không thể tải hình ảnh
             e.printStackTrace();
             throw e;
         }

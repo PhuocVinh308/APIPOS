@@ -47,7 +47,6 @@ public class ProductController {
 
         String tenFile = String.valueOf(System.currentTimeMillis());
 
-        // Truyen ID vao
         if (product.getLinkImage() != null && !product.getLinkImage().isEmpty()) {
             try {
                 String destinationPath = System.getProperty("user.dir") + File.separator + "images" + File.separator + tenFile + ".jpg";
@@ -58,8 +57,6 @@ public class ProductController {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
-
-        // Lưu hoặc cập nhật sản phẩm vào cơ sở dữ liệu
         Product savedProduct = productService.saveOrUpdateProduct(product);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
@@ -81,7 +78,6 @@ public class ProductController {
                 }
             }
 
-            // Delete the product from the database
             productService.deleteProductById(id);
 
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -95,18 +91,14 @@ public class ProductController {
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {
         return productService.getProductById(id)
                 .map(existingProduct -> {
-                    // Delete the existing image file if it exists
-                    if (existingProduct.getLinkLocal() != null && !existingProduct.getLinkLocal().isEmpty()) {
-                        File existingImageFile = new File(existingProduct.getLinkLocal());
-                        if (existingImageFile.exists() && existingImageFile.delete()) {
-                            System.out.println("Deleted the existing image file: " + existingImageFile.getName());
-                        }
-                    }
                     existingProduct.setProductName(updatedProduct.getProductName());
                     existingProduct.setPrice(updatedProduct.getPrice());
                     existingProduct.setLinkImage(updatedProduct.getLinkImage());
                     try {
-                        String destinationPath = System.getProperty("user.dir") + File.separator + "images" + File.separator + existingProduct.getProductName() + ".jpg";
+                        String tenFile = updatedProduct.getLinkLocal();
+                        File file = new File(tenFile);
+                        String fileName = file.getName();
+                        String destinationPath = System.getProperty("user.dir") + File.separator + "images" + File.separator + fileName;
                         File imageFile = new File(existingProduct.getLinkLocal());
                         if (imageFile.exists()) {
                             if (imageFile.delete()) {
@@ -114,6 +106,8 @@ public class ProductController {
                             } else {
                                 System.out.println("Failed to delete the file: " + imageFile.getName());
                             }
+                        }else {
+                            System.out.println(destinationPath);
                         }
                         productService.saveImageFromUrl(existingProduct.getLinkImage(), destinationPath);
                         existingProduct.setLinkLocal(destinationPath);
