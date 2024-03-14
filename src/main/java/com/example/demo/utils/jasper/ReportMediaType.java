@@ -3,14 +3,7 @@ package com.example.demo.utils.jasper;
 import com.google.common.collect.ImmutableMap;
 import org.springframework.http.MediaType;
 import org.springframework.util.MimeType;
-
 import java.util.Map;
-
-/**
- * Created by Leemintran on 03/11/21.
- * VNPT-IT KV5
- * toitv.tgg@vnpt.vn
- */
 public class ReportMediaType {
 
     private static final Map<ReportType, MediaType> mediaTypeMap = ImmutableMap.<ReportType, MediaType>builder()
