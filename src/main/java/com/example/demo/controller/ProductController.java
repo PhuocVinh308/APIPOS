@@ -44,9 +44,9 @@ public class ProductController {
 
     @PostMapping()
     public ResponseEntity<Product> saveOrUpdateProduct(@RequestBody Product product) {
-        Long productId = product.getId();
-//        String tenFile = (String) product.getId().toString();
-        String tenFile = productId != null ? productId.toString() : "";
+
+        String tenFile = (String) product.getId().toString();
+
         // Truyen ID vao
         if (product.getLinkImage() != null && !product.getLinkImage().isEmpty()) {
             try {
