@@ -5,13 +5,16 @@ import com.example.demo.model.OrderDetail;
 import com.example.demo.service.OrderService;
 import com.example.demo.utils.jasper.JasperUtils;
 import com.example.demo.utils.jasper.ReportType;
-import jakarta.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,9 +25,8 @@ import java.util.*;
 public class OrderController {
 
     private final OrderService orderService;
-
     @Autowired
-    public OrderController(OrderService orderService) {
+    public OrderController( OrderService orderService) {
         this.orderService = orderService;
     }
 
@@ -52,19 +54,25 @@ public class OrderController {
 
         int maxID = orderService.getMaxID();
         return maxID;
-//        return new Object() {
-//            public int id = maxID;
-//        };
+    }
+    @Scheduled(cron = "50 53 15 * * *")
+    public void xuatBaoCao() throws IOException {
+        ResponseEntity<ByteArrayResource> fileExcel = xuatExcel();
+        byte[] excelBytes = fileExcel.getBody().getByteArray();
 
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        String formattedDate = now.format(formatter);
+        String destinationPath = System.getProperty("user.dir") + File.separator + "report" + File.separator + formattedDate + ".xlsx";
+
+        FileOutputStream outputStream = new FileOutputStream(destinationPath);
+        outputStream.write(excelBytes);
+        outputStream.close();
     }
 
 @GetMapping("/xuatExcel")
-    public ResponseEntity<ByteArrayResource> xuatExcel(HttpServletResponse response) {
-
-        //Hàm get list doanh thu b vào đây
+    public ResponseEntity<ByteArrayResource> xuatExcel() {
         List<Map<String,Object>> list = orderService.getXuatExcelMap();
-
-
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
         String formattedDate = now.format(formatter);
@@ -80,7 +88,7 @@ public class OrderController {
 
 
     @GetMapping("/xuatPDF")
-    public ResponseEntity<ByteArrayResource> xuatPDF(HttpServletResponse response) {
+    public ResponseEntity<ByteArrayResource> xuatPDF() {
         List<Map<String,Object>> list = orderService.getXuatExcelMap();
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
