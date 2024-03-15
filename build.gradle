@@ -19,15 +19,18 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven { url "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/" }
+
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'commons-io:commons-io:2.11.0'
-	implementation 'com.lowagie:itext:2.1.7'
-	implementation 'org.apache.poi:poi:5.2.1'
-	implementation 'com.itextpdf:itextpdf:5.5.3'
+	implementation 'com.lowagie:itext:2.1.7.js9'
+
+	implementation 'org.apache.poi:poi:4.1.2'
+//	implementation 'com.itextpdf:itextpdf:5.5.13'
 	implementation 'net.sf.jasperreports:jasperreports:6.18.0'
 	implementation 'net.sf.jasperreports:jasperreports-fonts:6.18.0'
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'

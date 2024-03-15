@@ -93,7 +93,7 @@
 					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="13"/>
+					<font fontName="Arial" size="13"/>
 				</textElement>
 				<text><![CDATA[Số lượng]]></text>
 			</staticText>

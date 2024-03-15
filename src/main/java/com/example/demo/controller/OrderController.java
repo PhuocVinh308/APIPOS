@@ -77,7 +77,7 @@ public class OrderController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
         String formattedDate = now.format(formatter);
 
-        String templatePath = "templates/report/DoanhThu.jasper";
+        String templatePath = "templates/report/DoanhThuTemp.jasper";
         Map<String, Object> parameters = new HashMap<>();
         Locale locale = new Locale("vi", "VN");
         parameters.put(JRParameter.REPORT_LOCALE, locale);
