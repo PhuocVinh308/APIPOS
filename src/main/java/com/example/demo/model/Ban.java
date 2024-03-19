@@ -10,7 +10,6 @@ import java.util.List;
 @Entity
 public class Ban {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
     private boolean status;
