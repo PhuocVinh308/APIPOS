@@ -3,6 +3,8 @@ package com.example.demo.service;
 import com.example.demo.model.Product;
 import com.example.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -24,7 +26,7 @@ public class ProductService {
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
-
+    @Cacheable(value ="products")
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
@@ -33,6 +35,7 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
+    @CachePut(value = "products", key = "#product.id")
     public Product saveOrUpdateProduct(Product product) {
         return productRepository.save(product);
     }
