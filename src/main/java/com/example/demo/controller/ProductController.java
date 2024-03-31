@@ -14,7 +14,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/products")
-@CrossOrigin(origins = "http://10.12.44.29:3000") //Chi nh Cros cho IP FE
 public class ProductController {
 
     private final ProductService productService;

@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.model.Product;
 import com.example.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class ProductService {
     }
     @Cacheable(value ="products")
     public List<Product> getAllProducts() {
+        System.out.print("Da xuat");
         return productRepository.findAll();
     }
 
@@ -35,15 +37,16 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
-    @CachePut(value = "products", key = "#product.id")
+    @CachePut(value = "products", key = "#result.id")
     public Product saveOrUpdateProduct(Product product) {
-        return productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+        return savedProduct;
     }
 
+    @CacheEvict(value = "products", allEntries = true)
     public void deleteProductById(Long id) {
         productRepository.deleteById(id);
     }
-
     public void saveImageFromUrl(String imageUrl, String destinationPath) throws IOException {
         if (imageUrl == null || imageUrl.isEmpty()) {
             throw new IllegalArgumentException("Đường dẫn hình ảnh là null hoặc trống");
