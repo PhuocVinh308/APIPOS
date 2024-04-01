@@ -8,6 +8,8 @@ import com.example.demo.utils.jasper.ReportType;
 import net.sf.jasperreports.engine.JRParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
@@ -131,16 +133,14 @@ public class OrderController {
 
 
     @GetMapping("/chitiethoadon")
-    public List<OrderDetail> chiTiet() {
-        List<Object> objList = orderService.getChiTietHoaDon();
-        List<OrderDetail> detailList = new ArrayList<>();
+    public Page<OrderDetail> chiTiet(Pageable pageable) {
+        Page<Object[]> objPage = orderService.getChiTietHoaDon(pageable);
 
-        for (Object obj : objList) {
-            OrderDetail detail = new OrderDetail(obj);
-            detailList.add(detail);
-        }
+        Page<OrderDetail> detailPage = objPage.map(objArray -> {
+            return new OrderDetail(objArray);
+        });
 
-        return detailList;
+        return detailPage;
     }
 
     @GetMapping("/thucuongyeuthich")

@@ -1,6 +1,8 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.Order;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -10,11 +12,14 @@ import java.util.Map;
 
 @Repository
 public interface  OrderRepository extends JpaRepository<Order, Long> {
- @Query("select MAX(id) from Order")
+    @Query("select MAX(id) from Order")
     int findMaxByID();
 
-    @Query(value = "select o.id,o.order_date,o.total_amount,o.ban_id,p.product_name,oi.quantity,p.price from orders o join order_items oi on oi.order_id = o.id JOIN product p ON p.id = oi.product_id;\n", nativeQuery = true)
-     List<Object> getOrderDetail();
+    @Query(value = "SELECT o.id, o.order_date, o.total_amount, o.ban_id, p.product_name, oi.quantity, p.price FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN product p ON p.id = oi.product_id",
+            countQuery = "SELECT COUNT(*) FROM orders",
+            nativeQuery = true)
+    Page<Object[]> findOrderDetailWithPagination(Pageable pageable);
+
 
     @Query(value = "SELECT  SUM(o.total_amount) AS 'Tong doanh thu'\n" +
             "FROM orders o\n" +
