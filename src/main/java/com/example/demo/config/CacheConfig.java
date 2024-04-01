@@ -5,6 +5,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -16,16 +17,20 @@ public class CacheConfig {
     @Bean
     public Caffeine<Object, Object> caffeineConfig() {
         return Caffeine.newBuilder()
-                .expireAfterWrite(240, TimeUnit.MINUTES) // Thời gian sống của cache: 240 phút (4 giờ)
+                .expireAfterWrite(240, TimeUnit.MINUTES)
                 .maximumSize(100);
     }
 
     @Bean
-    public CaffeineCacheManager cacheManager() {
+    @Primary
+    public CaffeineCacheManager productCacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
         cacheManager.setCaffeine(caffeineConfig());
+        cacheManager.setCacheNames(List.of("products", "tables"));
 
-        cacheManager.setCacheNames(List.of("products"));
+//        cacheManager.setCacheNames(List.of("products"));
         return cacheManager;
     }
+
+
 }
