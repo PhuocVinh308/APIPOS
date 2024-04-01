@@ -21,8 +21,13 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+//    public List<Order> getAllOrders() {
+//        return orderRepository.findAll();
+//    }
+
+
+    public Page<Order> getAllOrdersWithPagination(Pageable pageable) {
+        return orderRepository.getAllOrdersWithPagination(pageable);
     }
 
     public Order getOrderById(Long orderId) {

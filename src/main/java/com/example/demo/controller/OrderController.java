@@ -32,9 +32,10 @@ public class OrderController {
         this.orderService = orderService;
     }
 
+
     @GetMapping
-    public List<Order> getAllOrders() {
-        return orderService.getAllOrders();
+    public Page<Order> getAllOrders(Pageable pageable) {
+        return orderService.getAllOrdersWithPagination(pageable);
     }
 
     @GetMapping("/{orderId}")

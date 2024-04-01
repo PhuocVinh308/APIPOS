@@ -14,6 +14,8 @@ import java.util.Map;
 public interface  OrderRepository extends JpaRepository<Order, Long> {
     @Query("select MAX(id) from Order")
     int findMaxByID();
+    @Query("SELECT o FROM Order o")
+    Page<Order> getAllOrdersWithPagination(Pageable pageable);
 
     @Query(value = "SELECT o.id, o.order_date, o.total_amount, o.ban_id, p.product_name, oi.quantity, p.price FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN product p ON p.id = oi.product_id",
             countQuery = "SELECT COUNT(*) FROM orders",
