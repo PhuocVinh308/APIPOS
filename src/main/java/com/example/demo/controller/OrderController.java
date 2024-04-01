@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.DTO.ThongKeDTO;
 import com.example.demo.model.Order;
 import com.example.demo.model.OrderDetail;
 import com.example.demo.service.OrderService;
@@ -18,6 +19,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -104,10 +106,22 @@ public class OrderController {
         parameters.put("NGAY_XUAT", formattedDate);
         return JasperUtils.getReportResponseEntity(templatePath, parameters, list, ReportType.PDF);
     }
-    @GetMapping("/doanhthungay")
+    @GetMapping("/ketngay")
     public Object ketNgay(){
         int doanhThu = orderService.getDoanhThu();
 
+        return new Object(){
+            public int tongDoanhThu = doanhThu;
+        };
+    }
+
+    @GetMapping("/thongke")
+    public Object thongKeTheoGiaiDoan(@RequestBody ThongKeDTO request) {
+        Date start = java.sql.Date.valueOf(request.getStartDate());
+        Date end = java.sql.Date.valueOf(request.getEndDate());
+
+
+        int doanhThu = orderService.getThongKeTheoGiaiDoan(start, end);
         return new Object(){
             public int tongDoanhThu = doanhThu;
         };

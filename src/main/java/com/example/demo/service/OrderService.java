@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -83,4 +84,15 @@ public class OrderService {
     public List<Map<String,Object>> getXuatExcelMap() {
         return orderRepository.getXuatExcelMap();
     }
+
+
+    public Integer getThongKeTheoGiaiDoan(Date start, Date end) {
+        Integer result = orderRepository.getThongKeTheoGiaiDoan(start, end);
+        if (result != null) {
+            return result.intValue();
+        } else {
+            return 0;
+        }
+    }
+
 }

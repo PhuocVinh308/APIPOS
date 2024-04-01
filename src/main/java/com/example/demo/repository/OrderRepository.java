@@ -5,8 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +23,7 @@ public interface  OrderRepository extends JpaRepository<Order, Long> {
             countQuery = "SELECT COUNT(*) FROM orders",
             nativeQuery = true)
     Page<Object[]> findOrderDetailWithPagination(Pageable pageable);
+
 
 
     @Query(value = "SELECT  SUM(o.total_amount) AS 'Tong doanh thu'\n" +
@@ -49,4 +52,7 @@ public interface  OrderRepository extends JpaRepository<Order, Long> {
         "JOIN orders o ON o.id = oi.order_id\n" +
         "WHERE DATE(o.order_date) = DATE(NOW()) order by o.id asc",nativeQuery = true)
 List<Map<String,Object>> getXuatExcelMap();
+    @Query(value = "SELECT SUM(o.total_amount) FROM Orders o WHERE o.order_date BETWEEN DATE(:start) AND DATE(:end)",nativeQuery = true)
+    Integer  getThongKeTheoGiaiDoan(@Param("start") Date start, @Param("end") Date end);
+
 }
