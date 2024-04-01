@@ -22,9 +22,6 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-//    public List<Order> getAllOrders() {
-//        return orderRepository.findAll();
-//    }
 
 
     public Page<Order> getAllOrdersWithPagination(Pageable pageable) {
@@ -62,8 +59,8 @@ public class OrderService {
         return orderRepository.findMaxByID();
     }
 
-    public Page<Object[]> getChiTietHoaDon(Pageable pageable) {
-        return orderRepository.findOrderDetailWithPagination(pageable);
+    public  List<Object> getChiTietHoaDon() {
+        return orderRepository.getChiTietHoaDon();
     }
     public int getDoanhThu() {
         return orderRepository.getDoanhThu();

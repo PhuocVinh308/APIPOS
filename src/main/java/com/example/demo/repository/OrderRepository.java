@@ -24,7 +24,8 @@ public interface  OrderRepository extends JpaRepository<Order, Long> {
             nativeQuery = true)
     Page<Object[]> findOrderDetailWithPagination(Pageable pageable);
 
-
+    @Query(value = "select o.id,o.order_date,o.total_amount,o.ban_id,p.product_name,oi.quantity,p.price from orders o join order_items oi on oi.order_id = o.id JOIN product p ON p.id = oi.product_id;\n", nativeQuery = true)
+    List<Object> getChiTietHoaDon();
 
     @Query(value = "SELECT  SUM(o.total_amount) AS 'Tong doanh thu'\n" +
             "FROM orders o\n" +

@@ -148,15 +148,15 @@ public class OrderController {
 
 
     @GetMapping("/chitiethoadon")
-    public Page<OrderDetail> chiTiet(Pageable pageable) {
-        Page<Object[]> objPage = orderService.getChiTietHoaDon(pageable);
-
-        Page<OrderDetail> detailPage = objPage.map(objArray -> {
-            return new OrderDetail(objArray);
-        });
-
-        return detailPage;
-    }
+    public List<OrderDetail> chiTiet() {
+        List<Object> objList = orderService.getChiTietHoaDon();
+        List<OrderDetail> detailList = new ArrayList<>();
+            for (Object obj : objList) {
+                OrderDetail detail = new OrderDetail(obj);
+                detailList.add(detail);
+            }
+            return detailList;
+        }
 
     @GetMapping("/thucuongyeuthich")
     public List<Object> thucUongYeuThich() {
