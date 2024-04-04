@@ -109,7 +109,6 @@ public class OrderController {
     @GetMapping("/ketngay")
     public Object ketNgay(){
         int doanhThu = orderService.getDoanhThu();
-
         return new Object(){
             public int tongDoanhThu = doanhThu;
         };

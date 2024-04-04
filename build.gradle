@@ -26,6 +26,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'commons-io:commons-io:2.11.0'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'com.lowagie:itext:2.1.7.js9'
 	implementation 'org.apache.poi:poi:4.1.2'
 	implementation 'com.github.ben-manes.caffeine:caffeine:3.0.0'

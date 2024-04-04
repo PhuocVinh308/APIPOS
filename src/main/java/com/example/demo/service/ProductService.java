@@ -30,7 +30,7 @@ public class ProductService {
     @Cacheable(value ="products")
     public List<Product> getAllProducts() {
         System.out.print("Da xuat");
-        return productRepository.findAll();
+        return productRepository.findProduct();
     }
 
     public Optional<Product> getProductById(Long id) {

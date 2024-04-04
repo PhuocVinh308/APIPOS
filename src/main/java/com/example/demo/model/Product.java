@@ -1,11 +1,14 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-
+@AllArgsConstructor
+@Setter
+@Getter
 @Data
 @Table(name = "product")
 @Entity
@@ -23,7 +26,7 @@ public class Product {
 
 	private String linkLocal;
 	private String linkImage;
-
+ 	private boolean is_delete;
 	public Product() {
 	}
 
@@ -42,6 +45,8 @@ public class Product {
 		this.linkLocal = linkImage;
 	}
 
+
+
 	public String getLinkImage() {
 		return linkImage;
 	}
@@ -54,41 +59,5 @@ public class Product {
 		this.id = id;
 		this.productName = productName;
 		this.price = price;
-	}
-
-	public void setLinkLocal(String linkLocal) {
-		this.linkLocal = linkLocal;
-	}
-
-
-
-	public String getLinkLocal() {
-		return linkLocal;
-	}
-
-
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public String getProductName() {
-		return productName;
 	}
 }

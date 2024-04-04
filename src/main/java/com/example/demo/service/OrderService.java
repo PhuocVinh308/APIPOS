@@ -63,7 +63,9 @@ public class OrderService {
         return orderRepository.getChiTietHoaDon();
     }
     public int getDoanhThu() {
-        return orderRepository.getDoanhThu();
+int temp = orderRepository.getDoanhThu();
+return orderRepository.getDoanhThu();
+
     }
 
     public List<Object> getDoanhThuThang() {

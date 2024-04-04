@@ -4,6 +4,7 @@ import com.example.demo.model.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -56,4 +57,8 @@ List<Map<String,Object>> getXuatExcelMap();
     @Query(value = "SELECT SUM(o.total_amount) FROM Orders o WHERE o.order_date BETWEEN DATE(:start) AND DATE(:end)",nativeQuery = true)
     Integer  getThongKeTheoGiaiDoan(@Param("start") Date start, @Param("end") Date end);
 
+
+    @Query(value = "DELETE FROM Orders WHERE ban_id = :banId;",nativeQuery = true)
+    @Modifying
+    void deleteBanById(Long banId);
 }
