@@ -2,34 +2,30 @@ package com.example.demo.service;
 
 import com.example.demo.model.Ban;
 import com.example.demo.repository.BanRepository;
-import com.example.demo.repository.OrderItemRepository;
-import com.example.demo.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class BanService {
-
+    @Autowired
     private final BanRepository tableRepository;
+
+
     @Autowired
-    private  OrderRepository orderRepository;
-    @Autowired
-    private OrderItemRepository orderItemRepository;
-    @Autowired
-    public BanService(BanRepository tableRepository,OrderRepository orderRepository) {
+    public BanService(BanRepository tableRepository) {
         this.tableRepository = tableRepository;
-        this.orderRepository = orderRepository;
-        this.orderItemRepository = orderItemRepository;
     }
 
     @Cacheable("tables")
     public List<Ban> getAllTables() {
-        return tableRepository.findAll();
+        return tableRepository.findBan();
     }
 
     public Optional<Ban> getTableById(Long tableId) {
@@ -60,8 +56,7 @@ public class BanService {
 
     @CacheEvict(value = "tables", key = "#result.id")
     public void deleteTable(Long tableId) {
-        orderItemRepository.deleteBanById(tableId);
-        orderRepository.deleteBanById(tableId);
+        System.out.print(tableId);
         tableRepository.deleteBanById(tableId);
     }
 }

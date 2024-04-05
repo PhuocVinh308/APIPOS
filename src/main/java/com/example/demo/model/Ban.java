@@ -1,9 +1,9 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 @Table(name = "Ban")
@@ -14,6 +14,7 @@ public class Ban {
 
     private boolean status;
 
+	private boolean is_deleted;
 //    @OneToMany(mappedBy = "ban", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    private List<Order> orders;
 
@@ -33,21 +34,6 @@ public class Ban {
 		this.status = status;
 	}
 
-//	public List<Order> getOrders() {
-//		return orders;
-//	}
-//
-//	public void setOrders(List<Order> orders) {
-//		this.orders = orders;
-//	}
-//
-//	public Ban(Long id, boolean status, List<Order> orders) {
-//		this.id = id;
-//		this.status = status;
-//		this.orders = orders;
-//	}
-
-
 
 public Ban( ) {
 }
@@ -58,4 +44,12 @@ public Ban(Long id, boolean status) {
 	this.status = status;
 }
 
+
+
+
+public Ban(Long id,boolean status,boolean is_deleted){
+		this.id = id;
+		this.status =status;
+		this.is_deleted = is_deleted;
+}
 }

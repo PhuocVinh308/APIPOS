@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
@@ -36,25 +37,30 @@ public class OrderController {
 
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     public Page<Order> getAllOrders(Pageable pageable) {
         return orderService.getAllOrdersWithPagination(pageable);
     }
 
     @GetMapping("/{orderId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     public Order getOrderById(@PathVariable Long orderId) {
         return orderService.getOrderById(orderId);
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     public Order createOrder(@RequestBody Order order) {
         return orderService.createOrder(order);
     }
 
     @PutMapping("/{orderId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     public Order updateOrder(@PathVariable Long orderId, @RequestBody Order updatedOrder) {
         return orderService.updateOrder(orderId, updatedOrder);
     }
     @GetMapping("/max")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     public Object layIDMax(){
 
         int maxID = orderService.getMaxID();
@@ -76,6 +82,7 @@ public class OrderController {
     }
 
 @GetMapping("/xuatExcel")
+@PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<ByteArrayResource> xuatExcel() {
         List<Map<String,Object>> list = orderService.getXuatExcelMap();
         LocalDateTime now = LocalDateTime.now();
@@ -93,6 +100,7 @@ public class OrderController {
 
 
     @GetMapping("/xuatPDF")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<ByteArrayResource> xuatPDF() {
         List<Map<String,Object>> list = orderService.getXuatExcelMap();
         LocalDateTime now = LocalDateTime.now();
@@ -107,6 +115,7 @@ public class OrderController {
         return JasperUtils.getReportResponseEntity(templatePath, parameters, list, ReportType.PDF);
     }
     @GetMapping("/ketngay")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public Object ketNgay(){
         int doanhThu = orderService.getDoanhThu();
         return new Object(){
@@ -115,6 +124,7 @@ public class OrderController {
     }
 
     @GetMapping("/thongke")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public Object thongKeTheoGiaiDoan(@RequestBody ThongKeDTO request) {
         Date start = java.sql.Date.valueOf(request.getStartDate());
         Date end = java.sql.Date.valueOf(request.getEndDate());
@@ -127,6 +137,8 @@ public class OrderController {
     }
 
     @GetMapping("/doanhthuthang")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+
     public List<Object> ketThang() {
         List<Object> dtTheoThang = new ArrayList<>();
         List<Object> doanhThu = orderService.getDoanhThuThang();
@@ -147,6 +159,7 @@ public class OrderController {
 
 
     @GetMapping("/chitiethoadon")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     public List<OrderDetail> chiTiet() {
         List<Object> objList = orderService.getChiTietHoaDon();
         List<OrderDetail> detailList = new ArrayList<>();
@@ -158,6 +171,7 @@ public class OrderController {
         }
 
     @GetMapping("/thucuongyeuthich")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<Object> thucUongYeuThich() {
         List<Object> thucUong = new ArrayList<>();
         List<Object> daMua = orderService.getDaMua();
@@ -172,7 +186,9 @@ public class OrderController {
         }
         return thucUong;
     }
+
     @DeleteMapping("/{orderId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     public void deleteOrder(@PathVariable Long orderId) {
         orderService.deleteOrder(orderId);
     }

@@ -39,11 +39,17 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/welcome", "/auth/addNewUser", "/auth/generateToken").permitAll()
+                .requestMatchers("/auth/addNewUser", "/auth/Token").permitAll()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/auth/user/**").authenticated()
+                .authorizeHttpRequests().requestMatchers("/api/products/**").authenticated()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/auth/admin/**").authenticated()
+                .authorizeHttpRequests().requestMatchers("/api/table/**").authenticated()
+                .and()
+                .authorizeHttpRequests().requestMatchers("/api/customers/**").authenticated()
+                .and()
+                .authorizeHttpRequests().requestMatchers("/api/orders/**").authenticated()
+                .and()
+                .authorizeHttpRequests().requestMatchers("/api/order-items/**").authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -53,7 +59,6 @@ public class SecurityConfig {
                 .build();
     }
 
-    // Password Encoding
     @Bean
     @Primary
     public PasswordEncoder passwordEncoder() {
