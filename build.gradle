@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.0.0'
+	id 'org.springframework.boot' version '3.0.6'
 	id 'io.spring.dependency-management' version '1.1.4'
 }
 
@@ -40,7 +40,7 @@ dependencies {
 	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
-	implementation 'org.springframework.boot:spring-boot-starter-cache:3.1.5'
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation 'com.google.guava:guava:31.0.1-android'
 	implementation 'org.glassfish.corba:glassfish-corba-orb:4.2.5'

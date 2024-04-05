@@ -2,8 +2,6 @@ package com.example.demo.model;
 import lombok.*;
 
 @Data
-@Setter
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthRequest {
