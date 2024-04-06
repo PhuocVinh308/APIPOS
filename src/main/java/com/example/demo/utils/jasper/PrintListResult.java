@@ -6,12 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-
-/**
- * Created by Leemintran on 03/11/21.
- * VNPT-IT KV5
- * toitv.tgg@vnpt.vn
- */
 @Getter
 @Setter
 @AllArgsConstructor

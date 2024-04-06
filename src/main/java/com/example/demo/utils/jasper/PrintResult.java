@@ -4,12 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-/**
- * Created by Leemintran on 03/11/21.
- * VNPT-IT KV5
- * toitv.tgg@vnpt.vn
- */
 @Getter
 @Setter
 @AllArgsConstructor
