@@ -16,7 +16,7 @@ steps:
       - 'apipos'
       - '--image=gcr.io/$PROJECT_ID/apipos'
       - '--platform=managed'
-      - '--region=your-region' # Thay your-region bằng khu vực mong muốn, ví dụ: us-central1
+      - '--region=us-central1'
       - '--allow-unauthenticated' # Cho phép truy cập không xác thực
     timeout: '1600s'
 
