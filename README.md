@@ -65,9 +65,34 @@ create database webnl
 - `DELETE /order-items/{id}`: Xóa một sản phẩm trong hoá đơn.
 
 #### Bàn
+- `GET /api/table`: Lấy tất cả các bàn.
+- `GET /api/table/{tableId}`: Lấy một bàn cụ thể bằng ID.
+- `GET /api/table/status`: Lấy một bàn bằng trạng thái của nó.
+- `POST /api/table`: Tạo một bàn mới.
+- `DELETE /api/table/{tableId}`: Xóa một bàn bằng ID.
+- `PUT /api/table/{tableId}`: Cập nhật một bàn bằng ID.
+#### Khách hàng 
+- `GET /api/customers`: Lấy tất cả các khách hàng.
+- `POST /api/customers`: Tạo một khách hàng mới.
+- `PUT /api/customers/{id}`: Cập nhật thông tin của một khách hàng bằng ID.
+- `DELETE /api/customers/{id}`: Xóa một khách hàng bằng ID.
 
-- `GET /table`: Lấy thông tin bàn.
-- 
+## Bảo Mật
+
+- Tất cả các điểm kết nối đều yêu cầu xác thực, với các cấp độ ủy quyền khác nhau:
+  - `ROLE_USER`: Người dùng có vai trò này có thể truy cập tất cả các điểm cuối.
+  - `ROLE_ADMIN`: Admin có vai trò này có thể truy cập tất cả các điểm cuối và thực hiện các hành động quản trị.
+
+## Cách Sử Dụng
+
+- Để lấy tất cả các khách hàng, thực hiện yêu cầu GET đến `/api/customers`.
+- Để tạo một khách hàng mới, thực hiện yêu cầu POST đến `/api/customers` với một dữ liệu JSON chứa thông tin của khách hàng.
+- Để cập nhật thông tin của một khách hàng bằng ID, thực hiện yêu cầu PUT đến `/api/customers/{id}` với một dữ liệu JSON chứa thông tin cập nhật của khách hàng.
+- Để xóa một khách hàng bằng ID, thực hiện yêu cầu DELETE đến `/api/customers/{id}`.
+
+## Yêu Cầu Tiên Quyết
+
+- Đảm bảo bạn có quyền truy cập vào ứng dụng với các vai trò phù hợp (ROLE_USER, ROLE_ADMIN)
 ### Đóng Góp
 
 Nếu bạn muốn đóng góp vào API hoặc báo cáo vấn đề, vui lòng tạo pull request hoặc issue trên GitHub của dự án.
