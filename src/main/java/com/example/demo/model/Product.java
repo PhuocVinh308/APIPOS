@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@AllArgsConstructor
-@Setter
-@Getter
+
 @Data
 @Table(name = "product")
 @Entity
