@@ -45,7 +45,7 @@ public class ProductController {
         return productService.getMaxId();
     }
 
-    @PostMapping()
+    @PostMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Product> saveOrUpdateProduct(@RequestBody Product product) {
 
