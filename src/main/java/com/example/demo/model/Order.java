@@ -23,10 +23,14 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
+    @Column(name = "order_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
 
+    @Column(name = "total_amount")
     private double totalAmount;
+
+    @Column(name = "phone_number")
     private String phoneNumber;
     public Order() {
         this.orderDate = new Date();

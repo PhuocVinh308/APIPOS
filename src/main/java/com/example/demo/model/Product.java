@@ -22,8 +22,12 @@ public class Product {
 	@Column(name = "price")
 	private double price;
 
+	@Column(name = "link_local")
 	private String linkLocal;
+
+	@Column(name = "link_image")
 	private String linkImage;
+
  	private boolean is_delete;
 	public Product() {
 	}

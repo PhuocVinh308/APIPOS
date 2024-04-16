@@ -11,9 +11,16 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long employeeId;
+
+    @Column(name = "full_name")
     private String fullName;
+
     private String cccd;
+
+    @Column(name = "phone_number")
     private String phoneNumber;
+
     private String position;
+    @Column(unique = true)
     private String account;
 }

@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Getter;
@@ -11,11 +12,20 @@ import java.util.Date;
 public class OrderDetail {
 
     private Long id;
+
+    @Column(name = "order_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
+
+    @Column(name = "total_amount")
     private Double totalAmount;
+
+    @Column(name = "ban_id")
     private Long banId;
+
+    @Column(name = "product_name")
     private String productName;
+
     private Integer quantity;
     private Double price;
 

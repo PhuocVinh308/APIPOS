@@ -13,7 +13,7 @@ public class Customer {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "phoneNumber")
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @Column(name = "point")
