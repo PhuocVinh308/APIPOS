@@ -5,7 +5,6 @@ import com.example.demo.service.BanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,16 +42,15 @@ public class BanController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
+    @PostMapping("/{tableId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public void saveTable(@RequestBody Ban table) {
-         tableService.saveTable(table);
+    public void saveTable(@PathVariable Long tableId) {
+         tableService.revertOrUpdate(tableId);
     }
 
     @DeleteMapping("/{tableId}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public void deleteTable(@PathVariable Long tableId) {
-        System.out.print(tableId);
         tableService.deleteTable(tableId);
     }
 

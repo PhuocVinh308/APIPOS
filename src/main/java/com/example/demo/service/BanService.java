@@ -36,22 +36,6 @@ public class BanService {
         return tableRepository.findByStatus(statusTable);
     }
 
-    @CacheEvict(value = "tables", allEntries = true)
-    public void saveTable(Ban table) {
-        Optional<Ban> obj = tableRepository.findById(table.getId());
-        if (obj.isPresent()) {
-            Ban existingTable = obj.get();
-            if (existingTable.is_deleted()) {
-                tableRepository.revertTable(existingTable.getId());
-            } else {
-                tableRepository.save(table);
-            }
-        } else {
-            tableRepository.save(table);
-        }
-    }
-
-
     public Ban updateTable(Long tableId, Ban updatedTable) {
         Optional<Ban> existingTableOptional = tableRepository.findById(tableId);
 
@@ -69,5 +53,27 @@ public class BanService {
     public void deleteTable(Long tableId) {
         System.out.print(tableId);
         tableRepository.deleteBanById(tableId);
+    }
+    @CacheEvict(value = "tables", allEntries = true)
+    public void revertOrUpdate(Long tableId) {
+        Optional<Ban> tableOptional = tableRepository.findById(tableId);
+        if (tableOptional.isPresent()) {
+            Ban table = tableOptional.get();
+            if (table.is_deleted()) {
+                table.set_deleted(false);
+                tableRepository.save(table);
+            } else {
+                Ban obj = new Ban();
+                obj.setId(tableId);
+                obj.setStatus(false);
+                obj.set_deleted(false);
+                tableRepository.save(obj);
+            }
+        } else {
+            Ban obj = new Ban();
+            obj.setId(tableId);
+            obj.setStatus(false);
+            obj.set_deleted(false);
+            tableRepository.save(obj);        }
     }
 }
