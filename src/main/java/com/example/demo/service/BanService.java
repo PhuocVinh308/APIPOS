@@ -37,9 +37,20 @@ public class BanService {
     }
 
     @CacheEvict(value = "tables", allEntries = true)
-    public Ban saveTable(Ban table) {
-        return tableRepository.save(table);
+    public void saveTable(Ban table) {
+        Optional<Ban> obj = tableRepository.findById(table.getId());
+        if (obj.isPresent()) {
+            Ban existingTable = obj.get();
+            if (existingTable.is_deleted()) {
+                tableRepository.revertTable(existingTable.getId());
+            } else {
+                tableRepository.save(table);
+            }
+        } else {
+            tableRepository.save(table);
+        }
     }
+
 
     public Ban updateTable(Long tableId, Ban updatedTable) {
         Optional<Ban> existingTableOptional = tableRepository.findById(tableId);

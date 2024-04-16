@@ -4,6 +4,7 @@ import com.example.demo.model.Ban;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,6 +21,11 @@ public interface  BanRepository extends JpaRepository<Ban, Long> {
     @Modifying
     @Query(value = "UPDATE ban SET is_deleted = 1 WHERE id = :banId",nativeQuery = true)
     void deleteBanById(Long banId);
+    @Modifying
+    @Query(value = "UPDATE Ban b SET b.is_deleted = 0 WHERE b.id = :banId",nativeQuery = true)
+    void revertTable(@Param("banId") Long banId);
+
+
 }
 
 

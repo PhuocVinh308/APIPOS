@@ -45,8 +45,8 @@ public class BanController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public Ban saveTable(@RequestBody Ban table) {
-        return tableService.saveTable(table);
+    public void saveTable(@RequestBody Ban table) {
+         tableService.saveTable(table);
     }
 
     @DeleteMapping("/{tableId}")
