@@ -13,6 +13,5 @@ public class Ban {
     @Id
 	private Long id;
     private boolean status;
- 	@Column(name ="is_deleted")
-	private boolean is_deleted;
+	private boolean deleted;
 }

@@ -18,7 +18,6 @@ public class BanService {
     private final BanRepository tableRepository;
 
 
-    @Autowired
     public BanService(BanRepository tableRepository) {
         this.tableRepository = tableRepository;
     }
@@ -48,32 +47,32 @@ public class BanService {
             throw new RuntimeException("Không tìm thấy bàn có id: " + tableId);
         }
     }
-
-    @CacheEvict(value = "tables", key = "#result.id")
+    @CacheEvict(value = "tables", allEntries = true)
     public void deleteTable(Long tableId) {
-        System.out.print(tableId);
         tableRepository.deleteBanById(tableId);
     }
+
     @CacheEvict(value = "tables", allEntries = true)
     public void revertOrUpdate(Long tableId) {
         Optional<Ban> tableOptional = tableRepository.findById(tableId);
         if (tableOptional.isPresent()) {
             Ban table = tableOptional.get();
-            if (table.is_deleted()) {
-                table.set_deleted(false);
+            if (table.isDeleted()) {
+                table.setDeleted(false);
                 tableRepository.save(table);
             } else {
                 Ban obj = new Ban();
                 obj.setId(tableId);
                 obj.setStatus(false);
-                obj.set_deleted(false);
+                obj.setDeleted(false);
                 tableRepository.save(obj);
             }
         } else {
             Ban obj = new Ban();
             obj.setId(tableId);
             obj.setStatus(false);
-            obj.set_deleted(false);
-            tableRepository.save(obj);        }
+            obj.setDeleted(false);
+            tableRepository.save(obj);
+        }
     }
 }

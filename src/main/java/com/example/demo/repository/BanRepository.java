@@ -14,11 +14,11 @@ public interface  BanRepository extends JpaRepository<Ban, Long> {
     Optional<Ban> findByStatus(boolean status);
 
 
-    @Query(value = "select * from ban b where b.is_deleted = 0",nativeQuery = true)
+    @Query(value = "select * from ban b where b.deleted = 0",nativeQuery = true)
     List<Ban> findBan();
 
     @Modifying
-    @Query(value = "UPDATE ban SET is_deleted = 1 WHERE id = :banId",nativeQuery = true)
+    @Query(value = "UPDATE ban b SET b.deleted = 1 WHERE b.id = :banId",nativeQuery = true)
     void deleteBanById(Long banId);
 
 
