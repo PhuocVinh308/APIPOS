@@ -39,7 +39,7 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
-    @CachePut(value = "products", key = "#result.id")
+    @CacheEvict(value = "products", allEntries = true)
     public Product saveOrUpdateProduct(Product product) {
         Product savedProduct = productRepository.save(product);
         return savedProduct;
