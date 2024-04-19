@@ -142,8 +142,6 @@ public class OrderController {
     public Object thongKeTheoGiaiDoan(@RequestBody ThongKeDTO request) {
         Date start = java.sql.Date.valueOf(request.getStartDate());
         Date end = java.sql.Date.valueOf(request.getEndDate());
-
-
         int doanhThu = orderService.getThongKeTheoGiaiDoan(start, end);
         return new Object(){
             public int tongDoanhThu = doanhThu;
