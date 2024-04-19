@@ -97,7 +97,21 @@ public class OrderController {
         parameters.put("NGAY_XUAT", formattedDate);
         return JasperUtils.getReportResponseEntity(templatePath, parameters, list, ReportType.XLSX);
     }
-
+    @GetMapping("/xuatHTML")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
+    public ResponseEntity<ByteArrayResource> xuatHTML() {
+        List<Map<String,Object>> list = orderService.getXuatExcelMap();
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        String formattedDate = now.format(formatter);
+        String templatePath = "templates/report/DoanhThu.jasper";
+        Map<String, Object> parameters = new HashMap<>();
+        Locale locale = new Locale("vi", "VN");
+        parameters.put(JRParameter.REPORT_LOCALE, locale);
+        parameters.put("NGUOI_XUAT", "Admin");
+        parameters.put("NGAY_XUAT", formattedDate);
+        return JasperUtils.getReportResponseEntity(templatePath, parameters, list, ReportType.HTML);
+    }
 
     @GetMapping("/xuatPDF")
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
