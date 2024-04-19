@@ -56,12 +56,8 @@ public interface  OrderRepository extends JpaRepository<Order, Long> {
 List<Map<String,Object>> getXuatExcelMap();
     @Query(value = "SELECT SUM(o.total_amount)\n" +
             "FROM Orders o \n" +
-            "WHERE (o.order_date BETWEEN DATE(:start) AND DATE(:end))\n" +
-            "   OR (DATE(:start) IS NULL)\n" +
-            "   OR (DATE(:start) = '')\n" +
-            "   OR (DATE(:end) IS NULL)\n" +
-            "   OR (DATE(:end) = '')\n",nativeQuery = true)
-    Integer  getThongKeTheoGiaiDoan(@Param("start") Date start, @Param("end") Date end);
+            "WHERE ((:start IS NULL OR o.order_date >= :start) AND (:end IS NULL OR o.order_date <= :end))", nativeQuery = true)
+    Integer getThongKeTheoGiaiDoan(@Param("start") Date start, @Param("end") Date end);
 
 
     @Query(value = "DELETE FROM Orders WHERE ban_id = :banId;",nativeQuery = true)

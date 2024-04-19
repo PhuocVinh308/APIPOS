@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.DTO.ThongKeDTO;
 import com.example.demo.model.Order;
 import com.example.demo.model.OrderDetail;
 import com.example.demo.service.OrderService;
@@ -139,13 +138,17 @@ public class OrderController {
 
     @GetMapping("/thongke")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public Object thongKeTheoGiaiDoan(@RequestBody ThongKeDTO request) {
-        Date start = java.sql.Date.valueOf(request.getStartDate());
-        Date end = java.sql.Date.valueOf(request.getEndDate());
-        int doanhThu = orderService.getThongKeTheoGiaiDoan(start, end);
-        return new Object(){
-            public int tongDoanhThu = doanhThu;
-        };
+    public Object thongKeTheoGiaiDoan(@RequestParam(name = "startDate", required = false) Date startDate,
+                                      @RequestParam(name = "endDate", required = false) Date endDate) {
+        if (startDate == null && endDate == null) {
+            return orderService.getThongKeTheoGiaiDoan(null, null);
+        } else if (startDate != null && endDate != null) {
+            return orderService.getThongKeTheoGiaiDoan(startDate, endDate);
+        } else if (startDate != null) {
+            return orderService.getThongKeTheoGiaiDoan(startDate, null);
+        } else {
+            return orderService.getThongKeTheoGiaiDoan(null, endDate);
+        }
     }
 
     @GetMapping("/doanhthuthang")
