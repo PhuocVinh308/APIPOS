@@ -34,4 +34,8 @@ public class UserInfoService implements UserDetailsService {
     }
 
 
+    public boolean existsByUsername(String username) {
+        return repository.existsByUsername(username);
+    }
+
 }
