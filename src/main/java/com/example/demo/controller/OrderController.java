@@ -138,7 +138,7 @@ public class OrderController {
 
     @GetMapping("/thongke")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public Object thongKeTheoGiaiDoan(@RequestParam(name = "startDate", required = false) Date startDate,
+    public Order thongKeTheoGiaiDoan(@RequestParam(name = "startDate", required = false) Date startDate,
                                       @RequestParam(name = "endDate", required = false) Date endDate) {
         if (startDate == null && endDate == null) {
             return orderService.getThongKeTheoGiaiDoan(null, null);

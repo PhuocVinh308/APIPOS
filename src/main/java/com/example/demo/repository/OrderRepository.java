@@ -17,7 +17,7 @@ import java.util.Map;
 public interface  OrderRepository extends JpaRepository<Order, Long> {
     @Query("select MAX(id) from Order")
     int findMaxByID();
-    @Query("SELECT o FROM Order o")
+    @Query("SELECT o FROM Order o ")
     Page<Order> getAllOrdersWithPagination(Pageable pageable);
 
     @Query(value = "SELECT o.id, o.order_date, o.total_amount, o.ban_id, p.product_name, oi.quantity, p.price FROM orders o JOIN order_items oi ON oi.order_id = o.id JOIN product p ON p.id = oi.product_id",
@@ -54,10 +54,10 @@ public interface  OrderRepository extends JpaRepository<Order, Long> {
         "JOIN orders o ON o.id = oi.order_id\n" +
         "WHERE DATE(o.order_date) = DATE(NOW()) order by o.id asc",nativeQuery = true)
 List<Map<String,Object>> getXuatExcelMap();
-    @Query(value = "SELECT SUM(o.total_amount)\n" +
+    @Query(value = "SELECT *" +
             "FROM Orders o \n" +
             "WHERE ((:start IS NULL OR o.order_date >= :start) AND (:end IS NULL OR o.order_date <= :end))", nativeQuery = true)
-    Integer getThongKeTheoGiaiDoan(@Param("start") Date start, @Param("end") Date end);
+    Order getThongKeTheoGiaiDoan(@Param("start") Date start, @Param("end") Date end);
 
 
     @Query(value = "DELETE FROM Orders WHERE ban_id = :banId;",nativeQuery = true)

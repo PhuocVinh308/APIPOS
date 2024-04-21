@@ -87,13 +87,9 @@ return orderRepository.getDoanhThu();
     }
 
 
-    public Integer getThongKeTheoGiaiDoan(Date start, Date end) {
-        Integer result = orderRepository.getThongKeTheoGiaiDoan(start, end);
-        if (result != null) {
-            return result.intValue();
-        } else {
-            return 0;
-        }
+    public Order getThongKeTheoGiaiDoan(Date start, Date end) {
+        Order result = orderRepository.getThongKeTheoGiaiDoan(start, end);
+       return result;
     }
 
 }
