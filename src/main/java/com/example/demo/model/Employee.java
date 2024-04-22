@@ -16,7 +16,6 @@ public class Employee {
     private String fullName;
 
     private String cccd;
-
     @Column(name = "phone_number")
     private String phoneNumber;
 

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.DTO.OrderDTO;
 import com.example.demo.model.Order;
 import com.example.demo.model.OrderDetail;
 import com.example.demo.service.OrderService;
@@ -138,8 +139,8 @@ public class OrderController {
 
     @GetMapping("/thongke")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public Order thongKeTheoGiaiDoan(@RequestParam(name = "startDate", required = false) Date startDate,
-                                      @RequestParam(name = "endDate", required = false) Date endDate) {
+    public List<OrderDTO> thongKeTheoGiaiDoan(@RequestParam(name = "startDate", required = false) Date startDate,
+                                              @RequestParam(name = "endDate", required = false) Date endDate) {
         if (startDate == null && endDate == null) {
             return orderService.getThongKeTheoGiaiDoan(null, null);
         } else if (startDate != null && endDate != null) {
@@ -160,6 +161,7 @@ public class OrderController {
         for (Object obj : doanhThu) {
 
             Object[] objArray = (Object[]) obj;
+            System.out.println(objArray);
             int thangValue = (int) objArray[0];
             double tongDoanhThuValue = (double) objArray[1];
             dtTheoThang.add(new Object() {

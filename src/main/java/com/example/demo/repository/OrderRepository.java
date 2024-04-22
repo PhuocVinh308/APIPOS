@@ -54,10 +54,11 @@ public interface  OrderRepository extends JpaRepository<Order, Long> {
         "JOIN orders o ON o.id = oi.order_id\n" +
         "WHERE DATE(o.order_date) = DATE(NOW()) order by o.id asc",nativeQuery = true)
 List<Map<String,Object>> getXuatExcelMap();
-    @Query(value = "SELECT *" +
-            "FROM Orders o \n" +
-            "WHERE ((:start IS NULL OR o.order_date >= :start) AND (:end IS NULL OR o.order_date <= :end))", nativeQuery = true)
-    Order getThongKeTheoGiaiDoan(@Param("start") Date start, @Param("end") Date end);
+    @Query(value = "SELECT o.id, o.order_date, o.total_amount, o.ban_id, e.full_name " +
+            "FROM orders o " +
+            "JOIN employee e ON e.id = o.employee_id " +
+            "WHERE (:start IS NULL OR o.order_date >= :start) AND (:end IS NULL OR o.order_date <= :end)", nativeQuery = true)
+    List<Object[]> getThongKeTheoGiaiDoan(@Param("start") Date start, @Param("end") Date end);
 
 
     @Query(value = "DELETE FROM Orders WHERE ban_id = :banId;",nativeQuery = true)

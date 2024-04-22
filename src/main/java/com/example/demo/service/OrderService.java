@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.DTO.OrderDTO;
 import com.example.demo.model.Order;
 import com.example.demo.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -87,9 +90,28 @@ return orderRepository.getDoanhThu();
     }
 
 
-    public Order getThongKeTheoGiaiDoan(Date start, Date end) {
-        Order result = orderRepository.getThongKeTheoGiaiDoan(start, end);
-       return result;
+    public List<OrderDTO> getThongKeTheoGiaiDoan(Date start, Date end) {
+        List<Object[]> result = orderRepository.getThongKeTheoGiaiDoan(start, end);
+        List<OrderDTO> finalList = new ArrayList<>();
+
+        for (Object[] objArray : result) {
+            OrderDTO orderDTO = new OrderDTO();
+            orderDTO.setId((Long) objArray[0]);
+            Timestamp orderDateTimestamp = (Timestamp) objArray[1];
+            Date orderDate = new Date(orderDateTimestamp.getTime());
+            orderDTO.setOrderDate(orderDate);
+
+            orderDTO.setTotalAmount((Double) objArray[2]);
+            orderDTO.setBanId((Long) objArray[3]);
+            orderDTO.setEmployeeFullName((String) objArray[4]);
+
+            finalList.add(orderDTO);
+        }
+
+        return finalList;
     }
+
+
+
 
 }
