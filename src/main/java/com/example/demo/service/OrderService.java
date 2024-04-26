@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -93,18 +94,19 @@ return orderRepository.getDoanhThu();
     public List<OrderDTO> getThongKeTheoGiaiDoan(Date start, Date end) {
         List<Object[]> result = orderRepository.getThongKeTheoGiaiDoan(start, end);
         List<OrderDTO> finalList = new ArrayList<>();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
 
         for (Object[] objArray : result) {
             OrderDTO orderDTO = new OrderDTO();
             orderDTO.setId((Long) objArray[0]);
             Timestamp orderDateTimestamp = (Timestamp) objArray[1];
             Date orderDate = new Date(orderDateTimestamp.getTime());
-            orderDTO.setOrderDate(orderDate);
-
+            String formattedDate = dateFormat.format(orderDate); // Chuyển đổi Date thành chuỗi theo định dạng HH:mm:ss dd/MM/yyyy
+            orderDTO.setOrderDate(formattedDate);
             orderDTO.setTotalAmount((Double) objArray[2]);
             orderDTO.setBanId((Long) objArray[3]);
             orderDTO.setEmployeeFullName((String) objArray[4]);
-
+            orderDTO.setPhoneNumber((String) objArray[5]);
             finalList.add(orderDTO);
         }
 
