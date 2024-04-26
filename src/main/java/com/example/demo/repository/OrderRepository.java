@@ -57,7 +57,7 @@ List<Map<String,Object>> getXuatExcelMap();
     @Query(value = "SELECT o.id, o.order_date, o.total_amount, o.ban_id, e.full_name,o.phone_number " +
             "FROM orders o " +
             "JOIN employee e ON e.id = o.employee_id " +
-            "WHERE (:start IS NULL OR o.order_date >= :start) AND (:end IS NULL OR o.order_date <= :end)", nativeQuery = true)
+            "WHERE (:start IS NULL OR Date(o.order_date) >= date(:start)) AND (:end IS NULL OR date(o.order_date) <= date(:end))", nativeQuery = true)
     List<Object[]> getThongKeTheoGiaiDoan(@Param("start") Date start, @Param("end") Date end);
 
 

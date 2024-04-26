@@ -1,6 +1,8 @@
 package com.example.demo;
 
+import com.example.demo.model.Employee;
 import com.example.demo.model.UserInfo;
+import com.example.demo.service.EmployeeService;
 import com.example.demo.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -13,6 +15,9 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
     @Autowired
     private UserInfoService userInfoService;
 
+    @Autowired
+    private EmployeeService employeeService;
+
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (!userInfoService.existsByUsername("admin")) {
@@ -21,6 +26,13 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
             adminUser.setPassword("admin");
             adminUser.setRoles("ROLE_ADMIN");
             userInfoService.addUser(adminUser);
+            Employee emp = new Employee();
+            emp.setEmployeeId(1L);
+            emp.setFullName("Admin");
+            emp.setAccount("admin");
+            employeeService.createEmployee(emp);
+
+
         }
     }
 }
