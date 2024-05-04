@@ -15,12 +15,13 @@ public class ShiftRegistration {
     private Long registrationId;
 
     @ManyToOne
-    @JoinColumn(name = "shift_id", referencedColumnName = "shift_id")
+    @JoinColumn(name = "shift_id", referencedColumnName = "id")
     private Shift shift;
 
     @ManyToOne
-    @JoinColumn(name = "employee_id", referencedColumnName = "employee_id")
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
+
 
     @Column(name = "registration_time")
     private LocalDateTime registrationTime;
