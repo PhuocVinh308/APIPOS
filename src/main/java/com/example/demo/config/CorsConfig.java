@@ -9,19 +9,31 @@ public class CorsConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        // Cấu hình CORS cho các yêu cầu liên quan đến `auth`
         registry.addMapping("/auth/**")
-                .allowedOrigins("http://localhost:3000") // Chỉ cho phép từ nguồn cụ thể
+                .allowedOriginPatterns("*")
+                .allowedOriginPatterns("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowCredentials(true) // Cho phép sử dụng chứng thực (credentials)
+                .allowCredentials(true)
                 .maxAge(3600);
 
-        // Cấu hình CORS cho các yêu cầu liên quan đến `api`
         registry.addMapping("/api/**")
-                .allowedOrigins("http://localhost:3000") // Chỉ cho phép từ nguồn cụ thể
+                .allowedOriginPatterns("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("Authorization", "Content-Type") // Chỉ định các tiêu đề HTTP được phép
-                .allowCredentials(true) // Cho phép sử dụng chứng thực (credentials)
+                .allowedHeaders("Authorization", "Content-Type")
+                .allowCredentials(true)
                 .maxAge(3600);
+        registry.addMapping("/auth/**")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowCredentials(true)
+                .maxAge(3600);
+
+        registry.addMapping("/api/**")
+                .allowedOrigins("http://localhost:3000")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedHeaders("Authorization", "Content-Type")
+                .allowCredentials(true)
+                .maxAge(3600);
+
     }
 }
