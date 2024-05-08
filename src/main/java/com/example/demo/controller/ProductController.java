@@ -139,8 +139,7 @@ public class ProductController {
 
                     try (Response response = client.newCall(request).execute()) {
                         if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-                        FileOutputStream fos = new FileOutputStream(new File(destinationPath));
-                        updatedProduct.setLinkLocal(destinationPath);
+                        FileOutputStream fos = new FileOutputStream(new File(updatedProduct.getLinkLocal()));
                         fos.write(response.body().bytes());
                         fos.close();
                     } catch (IOException e) {
