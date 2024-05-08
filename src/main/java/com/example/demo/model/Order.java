@@ -30,5 +30,7 @@ public class Order {
     private String phoneNumber;
     @OneToOne
     private Employee employee;
-
+    @ManyToOne
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
 }
