@@ -7,8 +7,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import okhttp3.*;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +21,7 @@ import java.util.Optional;
 public class ProductController {
 
     private final ProductService productService;
-
+    private String keyRmbg ="ZvWzsMdzSMHjRXV8QNhSyXyQ";
     @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
@@ -41,7 +44,7 @@ public class ProductController {
 
     @GetMapping("/max")
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
-    public Long getIDMax(){
+    public Long getIDMax() {
         return productService.getMaxId();
     }
 
@@ -51,15 +54,31 @@ public class ProductController {
 
         String tenFile = String.valueOf(System.currentTimeMillis());
 
-        if (product.getLinkImage() != null && !product.getLinkImage().isEmpty()) {
-            try {
-                String destinationPath = System.getProperty("user.dir") + File.separator + "images" + File.separator + tenFile + ".jpg";
-                productService.saveImageFromUrl(product.getLinkImage(), destinationPath);
-                product.setLinkLocal(destinationPath);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        OkHttpClient client = new OkHttpClient();
+
+        MultipartBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("image_url", product.getLinkImage())
+                .addFormDataPart("size", "auto")
+                .build();
+
+        Request request = new Request.Builder()
+                .url("https://api.remove.bg/v1.0/removebg")
+                .header("X-Api-Key", keyRmbg)
+                .post(requestBody)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+            File imagesDir = new File(System.getProperty("user.dir") + File.separator + "images");
+            imagesDir.mkdirs();
+            String filePath = imagesDir.getAbsolutePath() + File.separator + tenFile + ".png";
+            FileOutputStream fos = new FileOutputStream(new File(filePath));
+            product.setLinkLocal(filePath);
+            fos.write(response.body().bytes());
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         Product savedProduct = productService.saveOrUpdateProduct(product);
         return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
@@ -100,33 +119,44 @@ public class ProductController {
                     existingProduct.setProductName(updatedProduct.getProductName());
                     existingProduct.setPrice(updatedProduct.getPrice());
                     existingProduct.setLinkImage(updatedProduct.getLinkImage());
-                    try {
-                        String tenFile = updatedProduct.getLinkLocal();
-                        File file = new File(tenFile);
-                        String fileName = file.getName();
-                        String destinationPath = System.getProperty("user.dir") + File.separator + "images" + File.separator + fileName;
-                        File imageFile = new File(existingProduct.getLinkLocal());
-                        if (imageFile.exists()) {
-                            if (imageFile.delete()) {
-                                System.out.println("Deleted the file: " + imageFile.getName());
-                            } else {
-                                System.out.println("Failed to delete the file: " + imageFile.getName());
-                            }
-                        }else {
-                            System.out.println(destinationPath);
-                        }
-                        productService.saveImageFromUrl(existingProduct.getLinkImage(), destinationPath);
-                        existingProduct.setLinkLocal(destinationPath);
-                    }catch (IOException e) {
+                    String tenFile = String.valueOf(System.currentTimeMillis());
+                    File imagesDir = new File(System.getProperty("user.dir") + File.separator + "images");
+                    imagesDir.mkdirs();
+                    String destinationPath = imagesDir.getAbsolutePath() + File.separator + tenFile + ".png";
+
+                    OkHttpClient client = new OkHttpClient();
+                    MultipartBody requestBody = new MultipartBody.Builder()
+                            .setType(MultipartBody.FORM)
+                            .addFormDataPart("image_url", updatedProduct.getLinkImage())
+                            .addFormDataPart("size", "auto")
+                            .build();
+
+                    Request request = new Request.Builder()
+                            .url("https://api.remove.bg/v1.0/removebg")
+                            .header("X-Api-Key", keyRmbg)
+                            .post(requestBody)
+                            .build();
+
+                    try (Response response = client.newCall(request).execute()) {
+                        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+                        FileOutputStream fos = new FileOutputStream(new File(destinationPath));
+                        updatedProduct.setLinkLocal(destinationPath);
+                        fos.write(response.body().bytes());
+                        fos.close();
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-                    Product savedProduct = productService.saveOrUpdateProduct(existingProduct);
-                    return new ResponseEntity<>(savedProduct, HttpStatus.OK);
+                    File oldImageFile = new File(existingProduct.getLinkLocal());
+                    if (oldImageFile.exists() && !existingProduct.getLinkLocal().equals(updatedProduct.getLinkLocal())) {
+                        if (oldImageFile.delete()) {
+                            System.out.println("Deleted the old image file: " + oldImageFile.getName());
+                        } else {
+                            System.out.println("Failed to delete the old image file: " + oldImageFile.getName());
+                        }
+                    }
+                    productService.saveOrUpdateProduct(existingProduct);
+                    return new ResponseEntity<>(existingProduct, HttpStatus.OK);
                 })
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
-
-
 }
