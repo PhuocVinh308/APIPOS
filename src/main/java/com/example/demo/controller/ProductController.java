@@ -139,19 +139,12 @@ public class ProductController {
 
                     try (Response response = client.newCall(request).execute()) {
                         if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-                        FileOutputStream fos = new FileOutputStream(new File(updatedProduct.getLinkLocal()));
+                        FileOutputStream fos = new FileOutputStream(new File(existingProduct.getLinkLocal()));
                         fos.write(response.body().bytes());
                         fos.close();
+
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
-                    File oldImageFile = new File(existingProduct.getLinkLocal());
-                    if (oldImageFile.exists() && !existingProduct.getLinkLocal().equals(updatedProduct.getLinkLocal())) {
-                        if (oldImageFile.delete()) {
-                            System.out.println("Deleted the old image file: " + oldImageFile.getName());
-                        } else {
-                            System.out.println("Failed to delete the old image file: " + oldImageFile.getName());
-                        }
                     }
                     productService.saveOrUpdateProduct(existingProduct);
                     return new ResponseEntity<>(existingProduct, HttpStatus.OK);
