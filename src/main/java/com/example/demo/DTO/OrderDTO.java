@@ -13,4 +13,6 @@ public class OrderDTO {
     private Long banId;
     private String employeeFullName;
     private String phoneNumber;
+    private String typePayment;
+
 }
