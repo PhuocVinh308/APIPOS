@@ -23,4 +23,7 @@ public class Employee {
     @Column(unique = true)
     private String account;
     private String dob;
+    @Column(name = "is_deleted")
+    private boolean isDeleted=false;
+    private int salary;
 }
