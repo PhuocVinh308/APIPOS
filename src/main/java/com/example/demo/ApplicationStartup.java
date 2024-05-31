@@ -30,6 +30,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
             emp.setEmployeeId(1L);
             emp.setFullName("Admin");
             emp.setAccount("admin");
+            emp.setDeleted(false);
             employeeService.createEmployee(emp);
 
 
