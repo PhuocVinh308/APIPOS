@@ -37,7 +37,6 @@ public class ProductService {
     }
     @Cacheable(value ="products")
     public List<Product> getAllProducts() {
-        System.out.print("Da xuat");
         return productRepository.findProduct();
     }
 
@@ -63,5 +62,15 @@ public class ProductService {
 
     public Long getMaxId() {
         return productRepository.getMaxID();
+    }
+
+
+    @Cacheable(value ="products")
+    public List<Product> getNuoc() {
+        return productRepository.getNuoc();
+    }
+
+    public List<Product> getDoAn() {
+        return productRepository.getDoAn();
     }
 }

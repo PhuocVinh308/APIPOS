@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface  ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("SELECT p FROM Product p WHERE p.price = :price")
-    List<Product> getProductByPrice(double price);
+    @Query("SELECT p FROM Product p WHERE p.codeDM like 'THUC_UONG' and p.is_delete = false ")
+    List<Product> getNuoc();
 
     @Modifying
     @Query(value = "UPDATE product SET is_delete = 1 WHERE id = :id", nativeQuery = true)
@@ -27,5 +27,9 @@ public interface  ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findProduct();
     @Query(value = "Select max(p.id) from Product p",nativeQuery = true)
     Long getMaxID();
+
+    @Query("SELECT p FROM Product p WHERE p.codeDM like 'DO_AN' and p.is_delete = false ")
+    List<Product> getDoAn();
+
 }
 

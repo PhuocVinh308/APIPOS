@@ -27,4 +27,5 @@ public class Product {
 	@Column(name = "link_image")
 	private String linkImage;
  	private boolean is_delete;
+	 private String codeDM;
 }

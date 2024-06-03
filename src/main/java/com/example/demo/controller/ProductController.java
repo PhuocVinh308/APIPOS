@@ -27,10 +27,17 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping
+    @GetMapping("/do-an")
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
+    public ResponseEntity<List<Product>> getDoAn() {
+        List<Product> products = productService.getDoAn();
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
+
+    @GetMapping("/nuoc")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
+    public ResponseEntity<List<Product>> getNuoc() {
+        List<Product> products = productService.getNuoc();
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
