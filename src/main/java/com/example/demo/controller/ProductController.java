@@ -86,31 +86,35 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
+    public void deleteProductById(@PathVariable Long id) {
         Optional<Product> productOptional = productService.getProductById(id);
+        productService.deleteProductById(id);
 
-        if (productOptional.isPresent()) {
-            Product product = productOptional.get();
-            if (product.getLinkLocal() != null && !product.getLinkLocal().isEmpty()) {
-                File imageFile = new File(product.getLinkLocal());
-                if (imageFile.exists()) {
-                    if (imageFile.delete()) {
-                        System.out.println("Deleted the file: " + imageFile.getName());
-                    } else {
-                        System.out.println("Failed to delete the file: " + imageFile.getName());
-                    }
-                }
-            }
-
-            productService.deleteProductById(id);
-
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        if (productOptional.isPresent()) {
+//            Product product = productOptional.get();
+//            if (product.getLinkLocal() != null && !product.getLinkLocal().isEmpty()) {
+//                File imageFile = new File(product.getLinkLocal());
+//                if (imageFile.exists()) {
+//                    if (imageFile.delete()) {
+//                        System.out.println("Deleted the file: " + imageFile.getName());
+//                    } else {
+//                        System.out.println("Failed to delete the file: " + imageFile.getName());
+//                    }
+//                }
+//            }
+//        productService.deleteProductById(id);
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        } else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }
 
 
+
+    @GetMapping("/revert/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public void revertProduct(@PathVariable Long id) {
+         productService.revertProduct(id);
+}
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product updatedProduct) {

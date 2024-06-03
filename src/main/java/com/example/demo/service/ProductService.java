@@ -56,6 +56,11 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    @CacheEvict(value = "products", allEntries = true)
+    public void revertProduct(Long id) {
+        productRepository.revertProductByID(id);
+    }
+
     public Long getMaxId() {
         return productRepository.getMaxID();
     }
