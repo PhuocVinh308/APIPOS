@@ -76,7 +76,7 @@ public interface ComboRepository extends JpaRepository<Combo, Long> {
             "    JOIN \n" +
             "        product p2 ON oi2.product_id = p2.id\n" +
             "    WHERE \n" +
-            "        p1.codeDM = 'THUC_AN' AND p2.codeDM = 'NUOC_UONG'\n" +
+            "        p1.codeDM = 'DO_AN' AND p2.codeDM = 'NUOC_UONG'\n" +
             "    GROUP BY \n" +
             "        oi1.product_id, oi2.product_id\n" +
             "),\n" +

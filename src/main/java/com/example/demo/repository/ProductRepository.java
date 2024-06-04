@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface  ProductRepository extends JpaRepository<Product, Long> {
 
-    @Query("SELECT p FROM Product p WHERE p.codeDM like 'THUC_UONG' and p.is_delete = false ")
+    @Query("SELECT p FROM Product p WHERE p.codeDM like 'NUOC_UONG' and p.is_delete = false ")
     List<Product> getNuoc();
 
     @Modifying
