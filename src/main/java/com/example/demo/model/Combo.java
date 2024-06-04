@@ -2,15 +2,11 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Generated;
 
 @Data
 @Entity
 @Table(name = "combo")
 public class Combo {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @ManyToOne
     private Product food;
     @ManyToOne

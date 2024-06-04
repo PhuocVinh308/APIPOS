@@ -14,5 +14,4 @@ public class OrderDTO {
     private String employeeFullName;
     private String phoneNumber;
     private String typePayment;
-
 }
