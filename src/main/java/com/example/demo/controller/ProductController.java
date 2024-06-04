@@ -74,10 +74,14 @@ public class ProductController {
                 .header("X-Api-Key", keyRmbg)
                 .post(requestBody)
                 .build();
-
+        String pathFile;
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-            File imagesDir = new File(System.getProperty("user.dir") + File.separator + "images");
+            if(product.getCodeDM().equals("NUOC_UONG")) {
+                 pathFile = System.getProperty("user.dir") + File.separator + "images/drink"; }
+            else {
+                 pathFile = System.getProperty("user.dir") + File.separator + "images/food"; }
+            File imagesDir = new File(pathFile);
             imagesDir.mkdirs();
             String filePath = imagesDir.getAbsolutePath() + File.separator + tenFile + ".png";
             FileOutputStream fos = new FileOutputStream(new File(filePath));
