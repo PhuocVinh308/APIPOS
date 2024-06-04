@@ -7,6 +7,9 @@ import lombok.Data;
 @Entity
 @Table(name = "combo")
 public class Combo {
+
+    @Id
+    private Long id;
     @ManyToOne
     private Product food;
     @ManyToOne
