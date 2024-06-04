@@ -21,7 +21,7 @@ import java.util.Optional;
 public class ProductController {
 
     private final ProductService productService;
-    private String keyRmbg ="ZvWzsMdzSMHjRXV8QNhSyXyQ";
+    private String keyRmbg ="9WsAdrCS37J4oPANt7qRS3MR";
     @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
