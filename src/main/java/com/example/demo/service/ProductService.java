@@ -73,4 +73,14 @@ public class ProductService {
     public List<Product> getDoAn() {
         return productRepository.getDoAn();
     }
+
+
+    @Cacheable(value ="products")
+    public List<Product> getNuocDelete() {
+        return productRepository.getNuocDelete();
+    }
+
+    public List<Product> getThucAnDelete() {
+        return productRepository.getThucAnDelete();
+    }
 }

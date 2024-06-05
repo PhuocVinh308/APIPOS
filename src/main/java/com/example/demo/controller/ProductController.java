@@ -166,4 +166,15 @@ public class ProductController {
                 })
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+
+    @GetMapping("/delete/nuoc")
+    public List<Product> getNuocDelete(){
+        return productService.getNuocDelete();
+    }
+
+    @GetMapping("/delete/thuc-an")
+    public List<Product> getThucAnDelete(){
+        return productService.getThucAnDelete();
+    }
 }
