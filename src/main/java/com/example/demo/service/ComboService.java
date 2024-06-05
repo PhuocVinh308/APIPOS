@@ -42,4 +42,17 @@ public class ComboService {
         return comboList;
     }
 
+    public Combo saveCombo(Combo combo) {
+        return comboRepository.save(combo);
+    }
+
+    public Optional<Combo> getComboById(Long id) {
+        return comboRepository.findById(id);
+    }
+
+    public void deleteCombo(Long id) {
+        comboRepository.deleteById(id);
+    }
+
+
 }

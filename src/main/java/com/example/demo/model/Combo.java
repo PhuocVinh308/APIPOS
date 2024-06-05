@@ -9,10 +9,15 @@ import lombok.Data;
 public class Combo {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "food_id", referencedColumnName = "id")
     private Product food;
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "drink_id", referencedColumnName = "id")
     private Product drink;
     @Transient
     private int totalPrice;
