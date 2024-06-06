@@ -75,7 +75,6 @@ public class ProductService {
     }
 
 
-    @Cacheable(value ="products")
     public List<Product> getNuocDelete() {
         return productRepository.getNuocDelete();
     }

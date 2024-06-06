@@ -74,13 +74,15 @@ public class ProductController {
                 .header("X-Api-Key", keyRmbg)
                 .post(requestBody)
                 .build();
-        String pathFile;
+        String pathFile = System.getProperty("user.dir");
+        String newPath = pathFile.replace("/APIPOS", "");
+
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
             if(product.getCodeDM().equals("NUOC_UONG")) {
-                 pathFile = System.getProperty("user.dir") + File.separator + "images/drink"; }
+                 pathFile = newPath +"/src"+ File.separator + "images/drink"; }
             else {
-                 pathFile = System.getProperty("user.dir") + File.separator + "images/food"; }
+                 pathFile = newPath + "/src" + File.separator + "images/food"; }
             File imagesDir = new File(pathFile);
             imagesDir.mkdirs();
             String filePath = imagesDir.getAbsolutePath() + File.separator + tenFile + ".png";
@@ -168,7 +170,7 @@ public class ProductController {
     }
 
 
-    @GetMapping("/delete/nuoc")
+    @GetMapping("/delete")
     public List<Product> getNuocDelete(){
         return productService.getNuocDelete();
     }

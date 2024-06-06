@@ -34,7 +34,7 @@ public interface  ProductRepository extends JpaRepository<Product, Long> {
     @Query(value="select * from product p where p.id = :id and p.is_delete = false",nativeQuery = true)
     Product getProduct(Long id);
 
-    @Query("SELECT p FROM Product p WHERE p.codeDM like 'NUOC_UONG' and p.is_delete = true ")
+    @Query("SELECT p FROM Product p WHERE  p.is_delete = true ")
     List<Product> getNuocDelete();
 
     @Query("SELECT p FROM Product p WHERE p.codeDM like 'THUC_AN' and p.is_delete = true ")
