@@ -50,7 +50,8 @@ public class OrderController {
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     public Order createOrder(@RequestBody Order order) {
-        return orderService.createOrder(order);
+        Order createdOrder = orderService.createOrder(order);
+        return createdOrder;
     }
 
     @PutMapping("/{orderId}")

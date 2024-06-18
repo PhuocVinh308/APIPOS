@@ -19,6 +19,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	maven { url 'https://jitpack.io' }
 	maven { url "https://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/" }
 }
 
@@ -44,6 +45,8 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
 	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'org.telegram:telegrambots:6.7.0'
+	implementation 'com.github.ndanhkhoi:simple-telegram-command-bot-spring-boot-starter:2023.08.18'
 	implementation 'com.google.guava:guava:31.0.1-android'
 	implementation 'org.glassfish.corba:glassfish-corba-orb:4.2.5'
 	implementation 'org.apache.httpcomponents:httpclient:4.5.14'
