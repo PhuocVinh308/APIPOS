@@ -201,7 +201,7 @@ public class TeleBot {
 
     @CommandDescription("Trả lời chăm sóc khách hàng VD: /support mở cửa")
     @CommandMapping(value = "/support", allowAllUserAccess = true)
-    public void handleSupportCommand(Update update) {
+    public void handleSupportCommand(Update update) throws TelegramApiException {
         SendMessage message = new SendMessage();
         message.setParseMode(ParseMode.HTML);
 
@@ -209,8 +209,9 @@ public class TeleBot {
         String customerQuestion = update.getMessage().getText().trim().toLowerCase();
         String username = update.getMessage().getFrom().getUserName();
 
+        String replyMessage = "";
         try {
-            String replyMessage = "";
+            replyMessage = "";
             if (customerQuestion.contains("mở cửa")) {
                 replyMessage = "Hiện tại quán mở cửa từ 7:00 sáng đến 10:00 tối vào các ngày thường. " +
                         "Vào cuối tuần, quán mở cửa từ 8:00 sáng đến 11:00 tối.";
@@ -227,7 +228,7 @@ public class TeleBot {
                 replyMessage = "Quán có dịch vụ WiFi miễn phí cho khách hàng sử dụng trong thời gian lưu trú tại quán.";
             } else if (customerQuestion.contains("mang đi")) {
                 replyMessage = "Chúng tôi cung cấp dịch vụ thức uống mang đi cho khách hàng.";
-            } else if (customerQuestion.contains("đỗ xe")||customerQuestion.contains("đậu xe")) {
+            } else if (customerQuestion.contains("đỗ xe") || customerQuestion.contains("đậu xe")) {
                 replyMessage = "Quán có chỗ đậu xe miễn phí cho khách hàng gần quán.";
             } else if (customerQuestion.contains("sự kiện")) {
                 replyMessage = "Chúng tôi tổ chức các sự kiện đặc biệt như sinh nhật, họp mặt,... " +
@@ -255,9 +256,9 @@ public class TeleBot {
                 replyMessage = "Bạn có thể đặt chỗ trước bằng cách gọi điện thoại.";
             } else if (customerQuestion.contains("thanh toán")) {
                 replyMessage = "Chúng tôi chấp nhận các phương thức thanh toán như tiền mặt và ví điện tử.";
-            } else if (customerQuestion.contains("đặt nước")) {
-                replyMessage = "Bạn có thể đặt hàng trực tuyến theo cú pháp sao: /datnuoc <<tên nước>> <<số lượng>> <<SDT lien he>> VD: /datnuoc Trà sua 2 0123456789. Chúng tôi sẽ liên hệ để xác nhận đặt nước!";
-            }  else if (customerQuestion.contains("dịch vụ khác")) {
+            } else if (customerQuestion.contains("order") || customerQuestion.contains("đặt nước")) {
+                replyMessage = "Bạn có thể đặt hàng trực tuyến theo cú pháp sau:\n /datnuoc &lt;&lt;tên nước&gt;&gt; &lt;&lt;số lượng&gt;&gt; &lt;&lt;SDT lien he&gt;&gt;\n VD: <pre>/datnuoc Trà sua 2 0123456789. </pre> Chúng tôi sẽ liên hệ để xác nhận đặt nước!";
+            } else if (customerQuestion.contains("dịch vụ khác")) {
                 replyMessage = "Ngoài các dịch vụ thông thường, chúng tôi còn cung cấp dịch vụ tổ chức sự kiện và tiệc nhỏ.";
             } else if (customerQuestion.contains("sản phẩm mới")) {
                 replyMessage = "Chúng tôi thường xuyên cập nhật các sản phẩm mới. Bạn có thể theo dõi fanpage để biết thêm chi tiết hoặc liên hệ nhân viên để biết bestseller.";
@@ -287,18 +288,75 @@ public class TeleBot {
                 bot.execute(messageToAdmin);
             }
 
+            System.out.print("Bạn có thể đặt hàng trực tuyến theo cú pháp sao: /datnuoc <<tên nước>> <<số lượng>> <<SDT lien he>> VD: /datnuoc Trà sua 2 0123456789. Chúng tôi sẽ liên hệ để xác nhận đặt nước!");
             // Gửi tin nhắn trả lời cho khách hàng
             message.setText(replyMessage);
             message.setChatId(chatId.toString());
             bot.execute(message);
 
         } catch (TelegramApiException e) {
-            message.setText("Xin lỗi, có lỗi xảy ra khi xử lý yêu cầu hỗ trợ của bạn.");
+            message.setText(replyMessage);
             message.setChatId(chatId.toString());
+            bot.execute(message);
             try {
                 bot.execute(message);
             } catch (TelegramApiException ex) {
                 message.setText("Xin lỗi, có lỗi xảy ra khi xử lý yêu cầu hỗ trợ của bạn.");
+            }
+        }
+    }
+
+    @CommandDescription("Đặt nước trực tuyến")
+    @CommandMapping(value = "/datnuoc", allowAllUserAccess = true)
+    public void handleDatNuocCommand(Update update) {
+        SendMessage message = new SendMessage();
+        message.setParseMode(ParseMode.HTML);
+
+        Long chatId = update.getMessage().getChatId();
+        String customerRequest = update.getMessage().getText().trim();
+        String username = update.getMessage().getFrom().getUserName();
+
+        try {
+            String replyMessage = "";
+            String[] parts = customerRequest.split("\\s+");
+
+            if (parts.length >= 4 && parts[0].startsWith("/datnuoc")) {
+                StringBuilder tenNuocBuilder = new StringBuilder();
+                for (int i = 1; i < parts.length - 2; i++) {
+                    tenNuocBuilder.append(parts[i]).append(" ");
+                }
+                String tenNuoc = tenNuocBuilder.toString().trim();
+
+                int soLuong = Integer.parseInt(parts[parts.length - 2]);
+                String sdt = parts[parts.length - 1];
+
+                replyMessage = "<pre> Đơn đặt nước thành công:"+ ":\n"
+                        + "Tên nước: " + tenNuoc + "\n"
+                        + "Số lượng: " + soLuong + "\n"
+                        + "Số điện thoại: " + sdt +" </pre> \n Chúng tôi sẽ liên hệ @" + username +" để xác nhận đơn hàng.";
+
+                SendMessage messageToAdmin = new SendMessage();
+                messageToAdmin.setParseMode(ParseMode.HTML);
+                messageToAdmin.setChatId(ADMIN_CHAT_ID.toString());
+                messageToAdmin.setText("<pre> Đơn đặt nước từ khách hàng @" + username + ":\n"
+                        + "Tên nước: " + tenNuoc + "\n"
+                        + "Số lượng: " + soLuong + "\n"
+                        + "Số điện thoại: " + sdt +" </pre>");
+                bot.execute(messageToAdmin);
+            } else {
+                replyMessage = "Thông tin đặt nước không hợp lệ vui lòng nhập lại!!!";
+            }
+            message.setText(replyMessage);
+            message.setChatId(chatId.toString());
+            bot.execute(message);
+        } catch (TelegramApiException | NumberFormatException e) {
+            // Handle exceptions
+            message.setText("Xin lỗi, có lỗi xảy ra khi xử lý yêu cầu của bạn.");
+            message.setChatId(chatId.toString());
+            try {
+                bot.execute(message);
+            } catch (TelegramApiException ex) {
+                ex.printStackTrace();
             }
         }
     }
