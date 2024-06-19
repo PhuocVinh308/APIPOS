@@ -34,9 +34,5 @@ public class Order {
     @Column(name = "type_payment")
     private String typePayment;
 
-    @ManyToOne
-    @JoinColumn(name = "department_id")
-    private Department departmentId;
-
 
 }

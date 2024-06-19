@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.bot.TeleBot;
 import com.example.demo.model.Order;
 import com.example.demo.model.OrderDetail;
 import com.example.demo.service.OrderService;
@@ -30,8 +31,11 @@ public class OrderController {
 
     private final OrderService orderService;
     @Autowired
-    public OrderController( OrderService orderService) {
+    private final TeleBot teleBot;
+    @Autowired
+    public OrderController(OrderService orderService, TeleBot teleBot) {
         this.orderService = orderService;
+        this.teleBot = teleBot;
     }
 
 
@@ -51,6 +55,8 @@ public class OrderController {
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     public Order createOrder(@RequestBody Order order) {
         Order createdOrder = orderService.createOrder(order);
+        Long chatId = -4218299670L;
+        teleBot.sendAutoReply(chatId, createdOrder);
         return createdOrder;
     }
 
