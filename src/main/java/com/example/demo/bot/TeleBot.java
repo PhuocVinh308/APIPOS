@@ -19,11 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.bots.AbsSender;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -280,7 +282,6 @@ public class TeleBot {
                 replyMessage = "Chúng tôi cung cấp dịch vụ giao hàng. Bạn có thể đặt hàng qua ứng dụng hoặc gọi điện thoại trực tiếp.";
             } else {
                 replyMessage = "Cám ơn @" + username + " đã liên hệ với chúng tôi!\nChúng tôi sẽ trả lời bạn sớm nhất có thể.";
-                // Gửi tin nhắn từ khách hàng tới admin
                 SendMessage messageToAdmin = new SendMessage();
                 messageToAdmin.setParseMode(ParseMode.HTML);
                 messageToAdmin.setChatId(ADMIN_CHAT_ID.toString());
@@ -288,8 +289,6 @@ public class TeleBot {
                 bot.execute(messageToAdmin);
             }
 
-            System.out.print("Bạn có thể đặt hàng trực tuyến theo cú pháp sao: /datnuoc <<tên nước>> <<số lượng>> <<SDT lien he>> VD: /datnuoc Trà sua 2 0123456789. Chúng tôi sẽ liên hệ để xác nhận đặt nước!");
-            // Gửi tin nhắn trả lời cho khách hàng
             message.setText(replyMessage);
             message.setChatId(chatId.toString());
             bot.execute(message);
@@ -319,7 +318,6 @@ public class TeleBot {
         try {
             String replyMessage = "";
             String[] parts = customerRequest.split("\\s+");
-
             if (parts.length >= 4 && parts[0].startsWith("/datnuoc")) {
                 StringBuilder tenNuocBuilder = new StringBuilder();
                 for (int i = 1; i < parts.length - 2; i++) {
@@ -330,10 +328,8 @@ public class TeleBot {
                 int soLuong = Integer.parseInt(parts[parts.length - 2]);
                 String sdt = parts[parts.length - 1];
 
-                replyMessage = "<pre> Đơn đặt nước thành công:"+ ":\n"
-                        + "Tên nước: " + tenNuoc + "\n"
-                        + "Số lượng: " + soLuong + "\n"
-                        + "Số điện thoại: " + sdt +" </pre> \n Chúng tôi sẽ liên hệ @" + username +" để xác nhận đơn hàng.";
+                replyMessage = "<pre> Đã nhận đơn đặt nước: \n Tên nước: " + tenNuoc + "\n Số lượng " + soLuong + "\n Số điện thoại " + sdt +
+                        "\n Chúng tôi sẽ liên hệ @" + username + " để xác nhận đơn hàng. </pre>";
 
                 SendMessage messageToAdmin = new SendMessage();
                 messageToAdmin.setParseMode(ParseMode.HTML);
@@ -346,11 +342,11 @@ public class TeleBot {
             } else {
                 replyMessage = "Thông tin đặt nước không hợp lệ vui lòng nhập lại!!!";
             }
+
             message.setText(replyMessage);
             message.setChatId(chatId.toString());
             bot.execute(message);
         } catch (TelegramApiException | NumberFormatException e) {
-            // Handle exceptions
             message.setText("Xin lỗi, có lỗi xảy ra khi xử lý yêu cầu của bạn.");
             message.setChatId(chatId.toString());
             try {
@@ -359,7 +355,6 @@ public class TeleBot {
                 ex.printStackTrace();
             }
         }
+
     }
-
-
 }
