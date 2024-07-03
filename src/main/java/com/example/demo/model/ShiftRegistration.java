@@ -3,27 +3,20 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-@Data
 @Entity
-@Table(name = "shift_registrations")
+@Table(name = "shift_registration")
+@Data
 public class ShiftRegistration {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "registration_id")
-    private Long registrationId;
+    private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "shift_id", referencedColumnName = "id")
-    private Shift shift;
-
-    @ManyToOne
-    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    @JoinColumn(name = "employee_id")
     private Employee employee;
 
-
-    @Column(name = "registration_time")
-    private LocalDateTime registrationTime;
-
+    @ManyToOne
+    @JoinColumn(name = "shift_schedule_id")
+    private ShiftSchedule shiftSchedule;
 }

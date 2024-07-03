@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Employee findByAccount(String username);
-
+    Employee findByEmployeeId(Long id);
     @Modifying
     @Query(value = "Update Employee set isDeleted = true where employeeId =:id")
     void DeleteNhanVien(Long id);

@@ -37,4 +37,18 @@ public class EmployeeService {
     public Employee getEmployeeByUsername(String username) {
         return employeeRepository.findByAccount(username);
     }
+
+    public String getImageProfileById(Long id) throws Exception {
+        Optional<Employee> employeeOptional = employeeRepository.findById(id);
+        if (employeeOptional.isPresent()) {
+            Employee employee = employeeOptional.get();
+            if (employee.getImageProfile() != null) {
+                return employee.getImageProfile();
+            } else {
+                throw new Exception("Image not found");
+            }
+        } else {
+            throw new Exception("Employee not found");
+        }
+    }
 }

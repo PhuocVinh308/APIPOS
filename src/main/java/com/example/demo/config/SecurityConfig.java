@@ -28,13 +28,11 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthFilter authFilter;
 
-    // User Creation
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserInfoService();
     }
 
-    // Configuring HttpSecurity
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
@@ -57,6 +55,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests().requestMatchers("/api/combos/**").authenticated()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/department/**").authenticated()
+                .and()
+                .authorizeHttpRequests().requestMatchers("/api/shift-schedules/**").authenticated()
+                .and()
+                .authorizeHttpRequests().requestMatchers("/api/shift-registrations/**").authenticated()
+                .and()
+                .authorizeHttpRequests().requestMatchers("/api/attendance/**").authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

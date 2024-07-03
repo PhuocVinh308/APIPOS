@@ -64,4 +64,6 @@ List<Map<String,Object>> getXuatExcelMap();
     @Query(value = "DELETE FROM Orders WHERE ban_id = :banId;",nativeQuery = true)
     @Modifying
     void deleteBanById(Long banId);
+
+    List<Order> findByOrderDateBetween(Date startDate, Date endDate);
 }

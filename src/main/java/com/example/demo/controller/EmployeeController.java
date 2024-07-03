@@ -2,22 +2,34 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeService;
+import com.example.demo.service.SalaryCalculationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.util.Base64;
 import java.util.List;
+import org.springframework.core.io.InputStreamResource;
 
 @RestController
 @RequestMapping("api/employees")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
+    private final SalaryCalculationService salaryCalculationService;
 
     @Autowired
-    public EmployeeController(EmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService, SalaryCalculationService salaryCalculationService) {
         this.employeeService = employeeService;
+        this.salaryCalculationService = salaryCalculationService;
     }
 
     @GetMapping
@@ -31,6 +43,22 @@ public class EmployeeController {
         return employeeService.getEmployeeById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/image/{id}")
+    public ResponseEntity<byte[]> getImage(@PathVariable Long id) {
+        try {
+            String base64Image = employeeService.getImageProfileById(id);
+            byte[] imageBytes = Base64.getDecoder().decode(base64Image);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG);
+
+            return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            // Xử lý các ngoại lệ
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping("/account")
@@ -53,5 +81,11 @@ public class EmployeeController {
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
         employeeService.deleteEmployee(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/salary")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
+    public double calculateBasicSalary(@RequestParam Long employeeId) {
+        return salaryCalculationService.calculateSalaryForCurrentMonth(employeeId);
     }
 }
