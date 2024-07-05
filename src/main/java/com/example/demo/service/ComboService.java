@@ -60,8 +60,8 @@ public class ComboService {
         return comboRepository.save(combo);
     }
 
-    public Optional<Combo> getComboById(Long id) {
-        return comboRepository.findById(id);
+    public Combo getComboById(Long id) {
+        return comboRepository.getById(id);
     }
 
     public void deleteCombo(Long id) {

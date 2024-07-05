@@ -34,9 +34,9 @@ public class ComboController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Combo> getComboById(@PathVariable Long id) {
-        Optional<Combo> combo = comboService.getComboById(id);
-        return combo.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public Combo getComboById(@PathVariable Long id) {
+        Combo combo = comboService.getComboById(id);
+        return combo;
     }
 
     @GetMapping("/all")
