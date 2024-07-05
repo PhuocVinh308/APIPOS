@@ -61,7 +61,7 @@ public class ComboService {
     }
 
     public Combo getComboById(Long id) {
-        return comboRepository.getById(id);
+        return comboRepository.getComboById(id);
     }
 
     public void deleteCombo(Long id) {
