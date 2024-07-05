@@ -115,7 +115,6 @@ public interface ComboRepository extends JpaRepository<Combo, Long> {
             "    ip.support DESC;",nativeQuery = true)
     List<Object[]> viewCombo();
 
-
-
-
+    @Query("SELECT c FROM Combo c JOIN FETCH c.food JOIN FETCH c.drink")
+    List<Combo> getAll();
 }

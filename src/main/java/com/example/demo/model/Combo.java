@@ -19,10 +19,5 @@ public class Combo {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "drink_id", referencedColumnName = "id")
     private Product drink;
-    @Transient
     private int totalPrice;
-    public int getTotalPrice() {
-        double total =totalPrice;
-        if(this.totalPrice == 0 )  total = (food.getPrice() + drink.getPrice()) * 0.9;
-        return (int) Math.round(total);
-    }}
+}

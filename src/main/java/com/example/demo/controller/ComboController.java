@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.DTO.ComboDto;
+import com.example.demo.DTO.ComboReponse;
 import com.example.demo.model.Combo;
 import com.example.demo.service.ComboService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class ComboController {
     }
 
     @PostMapping
-    public ResponseEntity<Combo> createCombo(@RequestBody Combo combo) {
-        Combo savedCombo = comboService.saveCombo(combo);
+    public ResponseEntity<Combo> createCombo(@RequestBody ComboReponse comboReponse) {
+        Combo savedCombo = comboService.saveCombo(comboReponse);
         return ResponseEntity.ok(savedCombo);
     }
 
@@ -36,6 +37,12 @@ public class ComboController {
     public ResponseEntity<Combo> getComboById(@PathVariable Long id) {
         Optional<Combo> combo = comboService.getComboById(id);
         return combo.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/all")
+    public List<Combo> getComboById() {
+        List<Combo> combo = comboService.getAll();
+        return combo;
     }
 
     @DeleteMapping("/{id}")
