@@ -22,6 +22,7 @@ public class Combo {
     @Transient
     private int totalPrice;
     public int getTotalPrice() {
-        double total = (food.getPrice() + drink.getPrice()) * 0.9;
+        double total =totalPrice;
+        if(this.totalPrice == 0 )  total = (food.getPrice() + drink.getPrice()) * 0.9;
         return (int) Math.round(total);
     }}
