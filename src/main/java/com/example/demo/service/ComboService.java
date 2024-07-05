@@ -33,13 +33,19 @@ public class ComboService {
 
         List<Combo> comboList = new ArrayList<>();
         for (Object[] result : resultList) {
-            Combo combo = new Combo();
-            Product food = productRepository.getProduct((Long) result[1]);
-            Product drink = productRepository.getProduct((Long) result[0]);
-
-            combo.setFood(food);
-            combo.setDrink(drink);
-            comboList.add(combo);
+            Long drinkId = (Long) result[0];
+            Long foodId = (Long) result[1];
+            Product drink = productRepository.findById(drinkId)
+                    .orElseThrow(() -> new RuntimeException("Drink with ID " + drinkId + " not found"));
+            Product food = productRepository.findById(foodId)
+                    .orElseThrow(() -> new RuntimeException("Food with ID " + foodId + " not found"));
+            int check = comboRepository.getFoodAndDrink(drinkId, foodId).size();
+            if (check == 0) {
+                Combo combo = new Combo();
+                combo.setDrink(drink);
+                combo.setFood(food);
+                comboList.add(combo);
+            }
         }
         return comboList;
     }

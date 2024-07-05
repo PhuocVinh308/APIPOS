@@ -4,6 +4,7 @@ import com.example.demo.DTO.ComboDto;
 import com.example.demo.model.Combo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -119,4 +120,8 @@ public interface ComboRepository extends JpaRepository<Combo, Long> {
     List<Combo> getAll();
     @Query("SELECT c FROM Combo c JOIN FETCH c.food JOIN FETCH c.drink where c.id = ?1")
     Combo getComboById(Long id);
+
+    @Query("SELECT c FROM Combo c WHERE c.drink.id = :drinkId AND c.food.id = :foodId")
+    List<Combo> getFoodAndDrink(@Param("drinkId") Long drinkId, @Param("foodId") Long foodId);
+
 }
