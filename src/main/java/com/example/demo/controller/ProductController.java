@@ -21,7 +21,7 @@ import java.util.Optional;
 public class ProductController {
 
     private final ProductService productService;
-    private String keyRmbg ="9WsAdrCS37J4oPANt7qRS3MR";
+    private String keyRmbg ="Ku7oj856Qn8tixUUM62n5X6Y";
     @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
@@ -75,7 +75,8 @@ public class ProductController {
                 .post(requestBody)
                 .build();
         String pathFile = System.getProperty("user.dir");
-        String newPath = pathFile.replace("/APIPOS", "");
+        String linkAPIPOS = File.separator + "APIPOS";
+        String newPath = pathFile.replace(linkAPIPOS, "");
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
