@@ -23,7 +23,7 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
         if (!userInfoService.existsByUsername("admin")) {
             UserInfo adminUser = new UserInfo();
             adminUser.setUsername("admin");
-            adminUser.setPassword("admin");
+            adminUser.setPassword("123456");
             adminUser.setRoles("ROLE_ADMIN");
             userInfoService.addUser(adminUser);
             Employee emp = new Employee();
@@ -32,8 +32,6 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
             emp.setAccount("admin");
             emp.setDeleted(false);
             employeeService.createEmployee(emp);
-
-
         }
     }
 }

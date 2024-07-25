@@ -54,7 +54,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/combos/**").authenticated()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/api/department/**").authenticated()
+                .authorizeHttpRequests().requestMatchers("/api/bookings/**").permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/shift-schedules/**").authenticated()
                 .and()

@@ -6,10 +6,13 @@ import com.example.demo.model.ShiftRegistration;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.repository.ShiftRegistrationRepository;
 import com.example.demo.repository.ShiftScheduleRepository;
+import org.apache.poi.ss.formula.functions.Now;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ShiftScheduleService {
@@ -32,7 +35,10 @@ public class ShiftScheduleService {
     }
 
     public List<ShiftSchedule> getAllShiftSchedules() {
-        return shiftScheduleRepository.findAll();
+        Date now = new Date();
+        return shiftScheduleRepository.findAll().stream()
+                .filter(schedule -> schedule.getCapacity() > 0 && schedule.getScheduleDate().after(now))
+                .collect(Collectors.toList());
     }
 
     public ShiftSchedule getShiftScheduleById(Long id) {
@@ -47,9 +53,7 @@ public class ShiftScheduleService {
         shiftSchedule.setName(shiftScheduleDetails.getName());
         shiftSchedule.setStartTime(shiftScheduleDetails.getStartTime());
         shiftSchedule.setEndTime(shiftScheduleDetails.getEndTime());
-        shiftSchedule.setRepeatType(shiftScheduleDetails.getRepeatType());
-        shiftSchedule.setStartDate(shiftScheduleDetails.getStartDate());
-        shiftSchedule.setEndDate(shiftScheduleDetails.getEndDate());
+        shiftSchedule.setScheduleDate(shiftSchedule.getScheduleDate());
         shiftSchedule.setCapacity(shiftScheduleDetails.getCapacity());
 
         return shiftScheduleRepository.save(shiftSchedule);

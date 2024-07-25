@@ -24,13 +24,8 @@ public class ShiftSchedule {
     @Temporal(TemporalType.TIME)
     private Time endTime;
 
-    private String repeatType;
-
     @Temporal(TemporalType.DATE)
-    private Date startDate;
-
-    @Temporal(TemporalType.DATE)
-    private Date endDate;
+    private Date scheduleDate;
 
     private int capacity;
 

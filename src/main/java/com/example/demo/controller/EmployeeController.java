@@ -78,6 +78,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
         employeeService.deleteEmployee(id);
         return ResponseEntity.noContent().build();
@@ -86,6 +87,7 @@ public class EmployeeController {
     @GetMapping("/salary")
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     public double calculateBasicSalary(@RequestParam Long employeeId) {
-        return salaryCalculationService.calculateSalaryForCurrentMonth(employeeId);
+//        return salaryCalculationService.calculateSalaryForCurrentMonth(employeeId);
+        return 0;
     }
 }

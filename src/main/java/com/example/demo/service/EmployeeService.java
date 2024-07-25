@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -19,7 +20,7 @@ public class EmployeeService {
     }
 
     public List<Employee> getAllEmployees() {
-        return employeeRepository.findAll();
+        return employeeRepository.findAll().stream().filter(employee -> !employee.getAccount().equals("admin") && !employee.isDeleted()).collect(Collectors.toList());
     }
 
     public Optional<Employee> getEmployeeById(Long id) {
@@ -31,7 +32,10 @@ public class EmployeeService {
     }
 
     public void deleteEmployee(Long id) {
-        employeeRepository.DeleteNhanVien(id);
+        Employee e = employeeRepository.findByEmployeeId(id);
+        e.setDeleted(true);
+        employeeRepository.save(e);
+
     }
 
     public Employee getEmployeeByUsername(String username) {

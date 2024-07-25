@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -67,7 +68,22 @@ public class ShiftRegistrationService {
     public void deleteShiftRegistration(Long id) {
         ShiftRegistration shiftRegistration = shiftRegistrationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Shift Registration not found"));
-
+        Long idShift = shiftRegistration.getShiftSchedule().getId();
+        Optional<ShiftSchedule> temp = shiftScheduleRepository.findById(idShift);
+        if (temp.isPresent()) {
+            ShiftSchedule shiftSchedule = temp.get();
+            shiftSchedule.setCapacity(shiftSchedule.getCapacity()+1);
+            shiftScheduleRepository.save(shiftSchedule);
+        }
         shiftRegistrationRepository.delete(shiftRegistration);
+
+    }
+
+    public List<Map<String,Object>> getRegisteredShiftsForEmployee(Long employeeId) {
+        return shiftRegistrationRepository.findByEmployeeId(employeeId);
+    }
+
+    public List<Map<String, Object>> getTask(Long employeeId) {
+        return shiftRegistrationRepository.getScheduleByEmployeeId(employeeId);
     }
 }
