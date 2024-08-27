@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Employee;
+import com.example.demo.model.Shift;
 import com.example.demo.model.ShiftRegistration;
 import com.example.demo.repository.EmployeeRepository;
 import com.example.demo.service.ShiftRegistrationService;
@@ -11,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/shift-registrations")
@@ -23,10 +25,8 @@ public class ShiftRegistrationController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
-    public ResponseEntity<String> registerForShift(@RequestBody ShiftRegistration shiftRegistration) {
-        String registeredShiftRegistration = shiftRegistrationService.registerForShift(shiftRegistration);
-        return new ResponseEntity<String>(registeredShiftRegistration, HttpStatus.OK);
-
+    public String registerForShift(@RequestBody ShiftRegistration shiftRegistration) {
+       return shiftRegistrationService.registerForShift(shiftRegistration);
     }
 
     @GetMapping
@@ -35,7 +35,16 @@ public class ShiftRegistrationController {
         List<ShiftRegistration> shiftRegistrations = shiftRegistrationService.getAllShiftRegistrations();
         return new ResponseEntity<>(shiftRegistrations, HttpStatus.OK);
     }
-
+    @GetMapping("/employee/{employeeId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
+    public List<Map<String,Object>> getRegisteredShifts(@PathVariable Long employeeId) {
+        return shiftRegistrationService.getRegisteredShiftsForEmployee(employeeId);
+    }
+    @GetMapping("/task/{employeeId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
+    public List<Map<String,Object>> getTask(@PathVariable Long employeeId) {
+        return shiftRegistrationService.getTask(employeeId);
+    }
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
     public ResponseEntity<ShiftRegistration> getShiftRegistrationById(@PathVariable Long id) {

@@ -34,7 +34,7 @@ public class Employee {
     @Column(name = "gender")
     private String gender;
     @Column(name = "is_deleted")
-    private boolean isDeleted=false;
+    private boolean isDeleted;
     private int salary;
     private String imageProfile;
 }
