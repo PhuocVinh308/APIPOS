@@ -19,6 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -35,9 +37,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        String[] resources = new String[]{
+                "/**", "/home","/pictureCheckCode","/include/**",
+                "/css/**","/icons/**","/img/**","/js/**","/layer/**"
+        };
         return http.csrf().disable()
                 .cors().and()
                 .authorizeHttpRequests()
+                .requestMatchers(resources).permitAll()
                 .requestMatchers("/auth/addNewUser", "/auth/Token").permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/products/**").authenticated()
@@ -88,6 +95,15 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+    @Configuration
+    public class WebConfig implements WebMvcConfigurer {
 
+        @Override
+        public void addResourceHandlers(ResourceHandlerRegistry registry) {
+            // Đăng ký thư mục tĩnh bên ngoài thư mục mặc định
+            registry.addResourceHandler("/img/**")
+                    .addResourceLocations("file:/D:/FEPOS/APIPOS/src/main/resources/static/img/");
+        }
+    }
 
 } 

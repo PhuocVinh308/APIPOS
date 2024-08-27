@@ -75,20 +75,23 @@ public class ProductController {
                 .post(requestBody)
                 .build();
         String pathFile = System.getProperty("user.dir");
-        String linkAPIPOS = File.separator + "APIPOS";
-        String newPath = pathFile.replace(linkAPIPOS, "");
+        String linkAPIPOS = File.separator  + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "static";
+//        String newPath = pathFile.replace(linkAPIPOS, "");
 
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-            if(product.getCodeDM().equals("NUOC_UONG")) {
-                 pathFile = newPath +"/src"+ File.separator + "images/drink"; }
-            else {
-                 pathFile = newPath + "/src" + File.separator + "images/food"; }
+
+                 pathFile = pathFile + linkAPIPOS+ File.separator + "img";
+//            if(product.getCodeDM().equals("NUOC_UONG")) {
+//                 pathFile = pathFile + linkAPIPOS+ File.separator + "images/drink"; }
+//            else {
+//                 pathFile = pathFile + linkAPIPOS+  File.separator + "images/food"; }
             File imagesDir = new File(pathFile);
             imagesDir.mkdirs();
             String filePath = imagesDir.getAbsolutePath() + File.separator + tenFile + ".png";
             FileOutputStream fos = new FileOutputStream(new File(filePath));
-            product.setLinkLocal(filePath);
+            String linkLocalImage = tenFile + ".png";
+            product.setLinkLocal(linkLocalImage);
             fos.write(response.body().bytes());
             fos.close();
         } catch (IOException e) {
